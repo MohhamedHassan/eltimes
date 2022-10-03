@@ -1,0 +1,334 @@
+<section>
+    <ul class="breadCrumbb d-flex mb-5 p-2 list-unstyled">
+         <li>
+             <a
+             routerLink="/main/home"
+             >
+                 الرئيسية
+             </a>
+         </li>
+         <li>
+             /
+         </li>
+         <li>
+             <span>
+                 رياضة
+             </span>
+         </li>
+    </ul>
+    <div class="pageTitle mb-5">
+        <div class="title">رياضة</div>
+    </div>
+ </section>
+ <div 
+ *ngIf="areaone?.length"
+ class="advertisment mb-4">
+    <ng-container *ngIf="areaone?.length==1">
+        <a   [href]="areaone[0]?.link" target="_blank">
+          <img 
+          style="max-height:150px;width: 100%;object-fit: contain"
+          [src]="areaone[0]?.image?.file?.src" >
+       </a>
+      </ng-container>
+      <ng-container *ngIf="areaone.length>1">
+    
+        <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+        [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+        [navigation]="false" class=" ">
+        <ng-template 
+        *ngFor="let item of areaone"
+        data-swiper-autoplay="6000" swiperSlide>
+          <a   [href]="item?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="item?.image?.file?.src" >
+          </a>
+        </ng-template>
+    </swiper>
+      </ng-container>
+   
+  </div>
+  <!-- end ads section -->
+<section 
+class="sportsPage pb-3" style="min-height:100vh">
+    <div class="row">
+       
+        <div class="order-2 order-md-1 col-md-7 mb-4">
+            <ng-container *ngIf="sportsLoading;else swiperImages">
+                <ngx-skeleton-loader count="1" appearance="circle" [theme]="{
+                    width: '100%',
+                    height: '300px',
+                    'border-radius': '10px',
+                    margin:0
+                }"></ngx-skeleton-loader>
+            </ng-container>    
+            <ng-template #swiperImages>
+                <div class="newsImages autoSlider position-relative">
+                    <ng-container  *ngFor="let item of newsSlider;let i = index">
+                        <a 
+                        aria-label="Eltimes EG article details"
+                        [routerLink]="['/main/details',item?._id]" >
+                            <img 
+                            *ngIf="item?.show"
+                            [src]="item?.main?.image?.imageBigSize?.file?.src" alt="">
+                        </a>
+                        <i 
+                        (click)="sliderRight()"
+                        class="fas fa-chevron-right right"></i>
+                        <i 
+                        (click)="sliderLeft()"
+                        class="fas fa-chevron-left left"></i>
+                    </ng-container>
+                </div> 
+            </ng-template> 
+        </div>
+        <!-- end swiper section -->
+        <div 
+    
+        class="order-1 order-md-2 col-md-5 mb-4">
+            <ng-container *ngIf="live;else noLive" >
+              <div style="height: 300px;overflow: auto;">
+                <div *ngIf="liveType==2">
+                    <fb-video [attr.href]="live"></fb-video>
+                </div>
+                <div *ngIf="liveType==0">
+                    <youtube-player 
+                    [videoId]="live" 
+                    suggestedQuality="highres" 
+                    [height]="250" 
+                    [width]="500" 
+                   >
+                  </youtube-player>
+                </div>
+                <div 
+                [innerHtml]="live"
+                *ngIf="liveType==1">
+
+                </div>
+                <div class="bg-danger text-white text-center p-3">
+                    بث مباشر
+                </div>
+              </div>
+            </ng-container>
+           <ng-template #noLive>
+            <div 
+            *ngIf="areatwo?.length"
+            class="advertisment mb-4">
+               <ng-container *ngIf="areatwo?.length==1">
+                   <a   [href]="areatwo[0]?.link" target="_blank">
+                     <img 
+                     style="max-height:150px;width: 100%;object-fit: contain"
+                     [src]="areatwo[0]?.image?.file?.src" >
+                  </a>
+                 </ng-container>
+                 <ng-container *ngIf="areatwo.length>1">
+               
+                   <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+                   [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+                   [navigation]="false" class=" ">
+                   <ng-template 
+                   *ngFor="let item of areatwo"
+                   data-swiper-autoplay="6000" swiperSlide>
+                     <a   [href]="item?.link" target="_blank">
+                        <img 
+                        style="max-height:150px;width: 100%;object-fit: contain"
+                        [src]="item?.image?.file?.src" >
+                     </a>
+                   </ng-template>
+               </swiper>
+                 </ng-container>
+              
+             </div>
+           </ng-template>
+           <!-- end ads -->
+        </div>
+        <!-- end live section -->
+    </div>
+  <!-- end live and swiper -->
+    <section class="swiperTitleSection mb-4">
+        <ng-container *ngIf="sportsLoading;else swiperTitle">
+            <ngx-skeleton-loader count="3"  [theme]="{
+                width: '100%',
+                height: '10px',
+                'margin-bottom':'10px'
+            }"></ngx-skeleton-loader>
+        </ng-container>  
+        <ng-template #swiperTitle>
+            <ng-container *ngFor="let item of newsSlider">
+                <div 
+                style="height: 300px;overflow: hidden;"
+                *ngIf="item?.show"
+                class="swiperTitle mb-4 d-flex align-items-center py-4">
+                <a 
+                style="color: white;"
+                [routerLink]="['/main/details',item?._id]">
+                    <h2 style="line-height: 40px;">
+                        {{item?.main?.title|slice:0:100}}...
+                        
+                     </h2>
+                </a>
+                   
+                </div>
+            </ng-container>
+        </ng-template>
+    </section>
+    <!-- end swpier title -->
+    <div 
+    *ngIf="areathree?.length"
+    class="advertisment mb-4">
+       <ng-container *ngIf="areathree?.length==1">
+           <a   [href]="areathree[0]?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="areathree[0]?.image?.file?.src" >
+          </a>
+         </ng-container>
+         <ng-container *ngIf="areathree.length>1">
+       
+           <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+           [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+           [navigation]="false" class=" ">
+           <ng-template 
+           *ngFor="let item of areathree"
+           data-swiper-autoplay="6000" swiperSlide>
+             <a   [href]="item?.link" target="_blank">
+                <img 
+                style="max-height:150px;width: 100%;object-fit: contain"
+                [src]="item?.image?.file?.src" >
+             </a>
+           </ng-template>
+       </swiper>
+         </ng-container>
+      
+     </div>
+      <!-- end ads section -->
+    <section class="news ">
+        <div class="row">
+            <ng-container *ngIf="sportsLoading;else articles"> 
+                <div 
+                *ngFor="let item of navBarService.loadingCount"
+                class="col-sm-6  col-md-3 mb-4">
+                    <ngx-skeleton-loader count="1" appearance="circle" [theme]="{
+                        width: '100%',
+                        height: '150px',
+                        'border-radius': '10px',
+                        margin:0
+                    }"></ngx-skeleton-loader>
+                </div>
+            </ng-container>
+            <ng-template #articles>
+                <ng-container   *ngFor="let item of news | slice : 0 : 4">
+                    <div 
+                    *ngIf="item?.posts?.length"
+                  
+                    class="col-sm-6  col-md-3 mb-4">
+               <div >
+                <a [routerLink]="['/main/category/',item?._id,true,item?.title]">
+                    <h2 class="title">{{item?.title}}</h2>
+                </a>
+                    <ng-container *ngFor="let sub of item?.posts">
+                       <a [routerLink]="['/main/details',sub?._id]">
+                        <article *ngIf="sub!=null">
+                            <img [src]="sub?.main?.image?.image?.file?.src" class="w-100" alt="تايمز eg رياضة">
+                            <h3>{{sub?.main?.title }}...</h3>
+                        </article>
+                       </a>
+                    </ng-container>
+               </div>
+                    </div>
+                </ng-container>
+                
+           
+            </ng-template>
+        </div>
+    </section>
+    <div 
+    *ngIf="areafour?.length"
+    class="advertisment mb-4">
+       <ng-container *ngIf="areafour?.length==1">
+           <a   [href]="areafour[0]?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="areafour[0]?.image?.file?.src" >
+          </a>
+         </ng-container>
+         <ng-container *ngIf="areafour.length>1">
+       
+           <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false" 
+           [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+           [navigation]="false" class=" ">
+           <ng-template 
+           *ngFor="let item of areafour"
+           data-swiper-autoplay="6000" swiperSlide>
+             <a   [href]="item?.link" target="_blank">
+                <img 
+                style="max-height:150px;width: 100%;object-fit: contain"
+                [src]="item?.image?.file?.src" >
+             </a>
+           </ng-template>
+       </swiper>
+         </ng-container>
+      
+     </div>
+      <!-- end ads section -->
+    <section class="news">
+        <div class="row">
+            <ng-container *ngFor="let item of news | slice : 4 ">
+                <div 
+                *ngIf="item?.posts?.length"
+                class="col-sm-6  col-md-3 mb-4">
+             
+              <div >
+                <a [routerLink]="['/main/category/',item?._id,true,item?.title]">
+                    <h2 class="title">{{item?.title}}</h2>
+                </a>
+                    <ng-container *ngFor="let sub of item?.posts">
+                        <a [routerLink]="['/main/details',sub?._id]">
+                            <article *ngIf="sub!=null">
+                                <img [src]="sub?.main?.image?.image?.file?.src" class="w-100" alt="تايمز eg رياضة">
+                                <h3>{{sub?.main?.title}}...</h3>
+                            </article>
+                        </a>
+                    </ng-container>
+              </div>
+                </div>
+            </ng-container>
+           
+        </div>
+    </section>
+    <!-- end main content -->
+
+    <div
+     class="d-none d-lg-block">
+        <div 
+        *ngIf="IframFixedClass && hideFixedIframe"
+        style="position: fixed;bottom: 100px;left: 100px;width: 300px;height: 200px;z-index:1111111111111111;overflow: auto;"
+        class="fixed-ifram"
+       >
+        <div
+        style="background-color: rgba(0,0,0,.5);padding: 10px;">
+            <i 
+            (click)="IframFixedClass=false;hideFixedIframe=false"
+            style="cursor: pointer;" class="fas fa-times text-white"></i>
+        </div>
+        <div *ngIf="liveType==2">
+            <fb-video [attr.href]="live"></fb-video>
+        </div>
+        <div *ngIf="liveType==0">
+            <youtube-player 
+            [videoId]="live" 
+            suggestedQuality="highres" 
+            [height]="250" 
+            [width]="500" 
+           >
+          </youtube-player>
+        </div>
+        <div 
+        [innerHtml]="live"
+        *ngIf="liveType==1">
+
+        </div>
+        </div>
+    </div>
+</section>
+

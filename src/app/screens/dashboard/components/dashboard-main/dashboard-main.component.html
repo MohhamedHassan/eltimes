@@ -1,0 +1,125 @@
+<section class="dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-3">
+                <div class="menu p-4 sticky-top">
+                    <div class="image text-center">
+                        <a 
+                        routerLink="/"
+                        class="mb-2">
+                            <img src="assets/times.png" alt="">
+                        </a>
+                        <p class="text-secondary">{{authService.userProfile?.name}}</p>
+                        <p class="text-secondary">{{authService.userProfile?.email}}</p>
+                    </div>
+                    <ul class="list-unstyled p-0 mt-5">
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' ||
+                        authService.userProfile?.role?.type=='supervisor' ||
+                        authService.userProfile?.role?.type=='editor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/categories"
+                            routerLinkActive="activeLink"
+                           >الأقسام والمقالات</a>
+                        </li>
+                        <li      
+                        *ngIf="authService.userProfile?.role?.type=='admin' ||
+                        authService.userProfile?.role?.type=='supervisor' ||
+                        authService.userProfile?.role?.type=='writer'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/add-article"
+                            routerLinkActive="activeLink"
+                           >اضافة مقالة</a>
+                        </li>
+                        <li      
+                        *ngIf="authService.userProfile?.role?.type=='admin' ||
+                        authService.userProfile?.role?.type=='supervisor' ||
+                        authService.userProfile?.role?.type=='writer'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/add-file"
+                            routerLinkActive="activeLink"
+                           >اضافة صورة او فيديو  </a>
+                        </li>
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/live"
+                            routerLinkActive="activeLink"
+                           > البث المباشر</a>
+                        </li>
+                        <!-- <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' ||
+                        authService.userProfile?.role?.type=='supervisor' ||
+                        authService.userProfile?.role?.type=='editor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/accept-articles"
+                            routerLinkActive="activeLink"
+                           >قبول المقالات</a>
+                        </li> -->
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/users"
+                            routerLinkActive="activeLink"
+                           >جميع المستخدمين</a>
+                        </li>
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/question"
+                            routerLinkActive="activeLink"
+                           >  استطلاعات الراي </a>
+                        </li>
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/editor"
+                            routerLinkActive="activeLink"
+                           >   رئيس التحرير </a>
+                        </li>
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/advertisment"
+                            routerLinkActive="activeLink"
+                           >    الأعلانات </a>
+                        </li>
+                        <li
+                        *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'"
+                        >
+                            <a 
+                            routerLink="/dashboard-page/main/writers"
+                            routerLinkActive="activeLink"
+                           >    جميع الكتاب </a>
+                        </li>
+                        <li *ngIf="!authService?.isLogin()">
+                            <a 
+                            routerLink="/dashboard-page/main/login"
+                            routerLinkActive="activeLink"
+                           >تسجيل الدخول</a>
+                        </li>
+                        <li *ngIf="authService?.isLogin()">
+                            <a 
+                       (click)="authService.logOut()"
+                           >تسجيل الخروج</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-9">
+                <div class="p-4" style="min-height: 100vh;background-color: #F8F8F8">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

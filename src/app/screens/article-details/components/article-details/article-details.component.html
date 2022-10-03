@@ -1,0 +1,580 @@
+<ng-container *ngIf="loading;else mainContent">
+  <div class="d-flex my-5 justify-content-center">
+      <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+  </div>
+</ng-container>
+
+<ng-template #mainContent>
+  <section style="min-height: 100vh;overflow: hidden !important;">
+    <div class="row py-3">
+  <div class="col-12 mb-3">
+    <div 
+    *ngIf="ads?.length"
+    class="advertisment ">
+       <ng-container *ngIf="ads?.length==1">
+           <a   [href]="ads[0]?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="ads[0]?.image?.file?.src" >
+          </a>
+         </ng-container>
+         <ng-container *ngIf="ads.length>1">
+       
+           <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+           [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+           [navigation]="false" class=" ">
+           <ng-template 
+           *ngFor="let item of ads"
+           data-swiper-autoplay="6000" swiperSlide>
+             <a   [href]="item?.link" target="_blank">
+                <img 
+                style="max-height:150px;width: 100%;object-fit: contain"
+                [src]="item?.image?.file?.src" >
+             </a>
+           </ng-template>
+       </swiper>
+         </ng-container>
+      
+     </div>
+    <!-- end ads section -->
+  </div>
+      <div class="col-md-8 mb-3">
+        <div class="articleDetails pb-4 px-4">
+          <ul 
+          style="background-color: #E9ECEF;"
+          class="list-unstyled mb-4 articleBreadCrumb p-2 d-flex">
+            <li >
+              <a 
+              routerLink="/main/home"
+              class="text-danger">
+                الرئيسية
+              </a>
+            </li>
+            <li 
+            *ngIf="articleDetails?.categories?.length"
+            >
+              <a 
+              [routerLink]="'/main/category/'+articleDetails?.categories[0]?._id+'/false/'+articleDetails?.categories[0]?.title"
+              class="text-danger">
+               / {{articleDetails?.categories[0]?.title}}
+              </a>
+            </li>
+            <li    *ngIf="articleDetails?.subcategories?.length">
+              <a 
+              [routerLink]="'/main/category/'+articleDetails?.subcategories[0]?._id+'/true/'+articleDetails?.subcategories[0]?.title"
+              class="text-danger"
+              class="text-danger">
+            /  {{articleDetails?.subcategories[0]?.title}}
+              </a>
+            </li>
+          </ul>
+          <ng-container    
+           *ngIf="articleDetails?.categories?.length && articleDetails?.categories[0]?.seqHomepage==9;else notOpinion">
+            <div class="articleTitle d-flex  mb-5">
+              <div style="margin-left: 10px;">
+                  <img 
+                  style="height: 100px;width: 100px;object-fit: cover;border-radius: 50%;"
+                 [src]="articleDetails?.main?.image?.image?.file?.src"
+                 alt="">
+              </div>
+              <div>
+                  <p class="text-secondary fw-bold">
+                    {{articleDetails?.writer?.name}}
+                  </p>
+                  <h1 class="fw-bold">
+                    {{articleDetails?.main?.title}}
+                  </h1>
+                  <small class="text-secondary fw-bold"> 
+                    {{articleDetails?.updatedAt | date : 'fullDate' : undefined : 'ar'}}
+                  </small>
+              </div>
+        </div>
+          </ng-container> 
+          <ng-template #notOpinion>
+            <div class="articleTitle  mb-5">
+              <h1 class="fw-bold">
+                {{articleDetails?.main?.title}}
+              </h1>
+              <small class="text-secondary fw-bold"> 
+                {{articleDetails?.updatedAt | date : 'fullDate' : undefined : 'ar'}}
+              </small>
+            </div>
+            <div class="text-center articleImagee mb-3">
+              <img [src]="articleDetails?.main?.image?.imageBigSize?.file?.src" 
+              class="img-fluid" style="max-height: 500px;object-fit: cover;" alt="تايمز eg">
+              <p 
+              [innerHtml]="articleDetails?.main?.image?.title"
+              class="m-0 text-center"></p>
+            </div>
+          </ng-template>
+          
+     
+         
+          <div 
+          
+          class="content mb-3">
+            <div 
+            *ngIf="articleDetails?.categories?.length && articleDetails?.categories[0]?.seqHomepage!=9"
+            class="mb-3">
+              <p class="text-danger  fw-bold">كتب {{articleDetails?.writer?.name}}</p>
+  
+            </div>
+            <div class="shareOnSocialMedia flex-column flex-sm-row d-flex align-items-center justify-content-center">
+              <span class="sharee my-2"><i class="fas text-danger fa-share-alt"></i> مشاركة</span>
+              <ul class="socialMedia list-unstyled  p-0 d-flex my-2">
+                <li>
+                  <a
+                  target="_blank" rel="noreferrer"
+                  [href]="'http://pinterest.com/pin/create/link/?url=https://eltimeseg.com/main/details/'+articleId"
+                  > <i style="background-color:  #DF0019;;" class="fab fa-pinterest-p"></i></a>
+                </li>
+                <li>
+                  <a
+                  target="_blank" rel="noreferrer"
+                  [href]="'https://twitter.com/intent/tweet?url=https://eltimeseg.com/main/details/'+articleId">
+                  
+                    <i style="background-color:  #1D9BF0;;" class="fab fa-twitter"></i></a>
+                </li>
+                <li>
+                  <a
+                  target="_blank" rel="noreferrer"
+                  [href]="'https://www.facebook.com/sharer.php?u=https://eltimeseg.com/main/details/'+articleId"
+                  ><i style="background-color: #1B74E4;;" class="fab fa-facebook-f"></i></a>
+                </li>
+              </ul>
+            </div>
+            <!-- end shareOnSocialMedia -->
+            <div 
+            *ngIf="ads?.length"
+            class="advertisment my-4">
+               <ng-container *ngIf="ads?.length==1">
+                   <a   [href]="ads[0]?.link" target="_blank">
+                     <img 
+                     style="max-height:150px;width: 100%;object-fit: contain"
+                     [src]="ads[0]?.image?.file?.src" >
+                  </a>
+                 </ng-container>
+                 <ng-container *ngIf="ads.length>1">
+               
+                   <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+                   [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+                   [navigation]="false" class=" ">
+                   <ng-template 
+                   *ngFor="let item of ads"
+                   data-swiper-autoplay="6000" swiperSlide>
+                     <a   [href]="item?.link" target="_blank">
+                        <img 
+                        style="max-height:150px;width: 100%;object-fit: contain"
+                        [src]="item?.image?.file?.src" >
+                     </a>
+                   </ng-template>
+               </swiper>
+                 </ng-container>
+              
+             </div>
+            <!-- end ads section -->
+            <div 
+           
+            class="showContent">
+              <div class="mb-4" *ngFor="let item of articleDetails?.content;let i = index">
+               
+                  <h2 
+                  style="font-size: large;
+                  font-weight: 700;
+                  line-height: 35px;
+                  border-bottom: 1px solid #dcdcdc;
+                  padding-bottom: 5px;
+                  color: #de2323;"
+                  *ngIf="item?.title"
+                  [innerHtml]="item?.title"
+                  ></h2>
+                  <!-- end paragraph title -->
+                  <p 
+                  style="text-align: justify;font-size: 18px;
+                  line-height: 1.9;"
+                  [innerHtml]="item?.desc"
+                  class="m-0 content" 
+                  *ngIf="item?.desc"></p>
+              
+                
+                            <!-- end paragraph text -->
+                  <ul 
+                  class="list-unstyled p-0 m-0"
+                  *ngIf="item?.ul?.length">
+                      <li 
+                      style="margin-bottom: 10px;"
+                      *ngFor="let li of item?.ul"
+                     
+                      >
+                      <svg 
+                      style="margin-top: 5px;"
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                          <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                        </svg>
+                      <span  
+                      style="font-size: 18px;"
+                      [innerHtml]="li"></span>
+                  </li>
+                  </ul>
+                 <!-- end paragraph ul -->
+                  <youtube-player 
+                  *ngIf="item?.youtubeLink"
+                  [videoId]="item?.youtubeLink" 
+                  suggestedQuality="highres" 
+                  [height]="250" 
+                  [width]="500" 
+                  [startSeconds]="0">
+                </youtube-player>
+          <!-- end paragraph youtube -->
+                <fb-video 
+                *ngIf="item?.facebookVideoLink"
+                [attr.href]="item?.facebookVideoLink"></fb-video>
+          <!-- end paragraph facebook video -->
+                <fb-post 
+                *ngIf="item?.facebookImageLink"
+                [attr.href]="item?.facebookImageLink"></fb-post>
+                 <!-- end paragraph facebook post -->
+                <div 
+                [innerHtml]="item?.twitterOrInstagramHtml"
+                *ngIf="item?.twitterOrInstagramHtml">
+
+                </div>
+               <!-- end paragraph twitter & instagram -->
+                <div style="overflow: auto;" class="px-2">
+                  <table 
+                  style="border-color:black"
+                  *ngIf="item?.table?.length"
+                  class="table table-bordered">
+                  <tbody>
+                    <tr *ngFor="let row of item?.table">
+                      <td
+                      [innerHtml]="item?.column"
+                      *ngFor="let item of row"
+                      ></td>
+                    </tr>
+                  </tbody>
+                  </table>
+                </div>
+                <!-- end paragraph table -->
+                <div 
+                class="text-center"
+                *ngIf="item?.image?.image?.file?.src">
+                  <img 
+                  class="img-fluid"
+                  style="max-height: 400px;object-fit: cover;"
+                  [src]="item?.image?.image?.file?.src" alt="">
+                  <p 
+                  [innerHtml]="item?.image?.title"
+                  *ngIf="item?.image?.title"
+                  class="m-0 text-center"></p>
+             
+                </div>
+                 <!-- end paragraph image  -->
+                <div 
+                *ngIf="item?.videoFromHisDevice?.file?.src"
+                class="text-center">
+                <video style="width: 100%;" height="240" controls>
+                  <source [src]="item?.videoFromHisDevice?.file?.src" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                </div>
+                 <!-- end paragraph video from his device -->
+                <div *ngIf="item?.album?.length">
+                  <div class="row">
+                      <div 
+                      *ngFor="let albumImage of item?.album"
+                      class="col-md-6 mb-4">
+                          <div>
+                              <img 
+                              style="object-fit: cover;height: 300px;width: 100%;"
+                              [src]="albumImage?.file?.src" alt="">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+               <!-- end paragraph album -->
+              </div>
+           </div>
+  
+          </div>
+          <!-- end content -->
+          <ul 
+          *ngIf="articleDetails?.keywords?.length"
+          class="list-unstyled p-0 mb-3 keyWords d-flex flex-wrap">
+            <i class="text-danger m-2 ps-2 fas fa-search"></i>
+             <li
+             *ngFor="let item of articleDetails?.keywords"
+             ><a 
+             [routerLink]="['/main/search',item]"
+             class="text-white px-3 py-1  bg-secondary">{{item}}</a></li>
+          </ul>
+          <!-- end key words -->
+          <h2
+          style="font-size: medium;" 
+          *ngIf="commonArticles?.length"
+          class="bg-danger fw-bold text-white p-2">الموضوعات المتعلقة</h2>
+          <section 
+          *ngIf="commonArticles?.length"
+          class="news mb-3">
+            <div class="row">
+                  <div 
+                  *ngFor="let item of commonArticles"
+                  class="col-sm-6  col-md-4 mb-2">
+                      <a [routerLink]="['/main/details',item?._id]" >
+                        <article>
+                          <img [src]="item?.main?.image?.image?.file?.src" class="w-100" alt="التايمز eg">
+                          <h3>
+                            {{item?.main?.title|slice:0:100}}... </h3>
+                        </article>
+                      </a>
+                  </div>
+            </div>
+          </section>
+          <!-- end related -->
+ 
+  
+          <div 
+          *ngIf="ads?.length"
+          class="advertisment mb-4">
+             <ng-container *ngIf="ads?.length==1">
+                 <a   [href]="ads[0]?.link" target="_blank">
+                   <img 
+                   style="max-height:150px;width: 100%;object-fit: contain"
+                   [src]="ads[0]?.image?.file?.src" >
+                </a>
+               </ng-container>
+               <ng-container *ngIf="ads.length>1">
+             
+                 <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+                 [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+                 [navigation]="false" class=" ">
+                 <ng-template 
+                 *ngFor="let item of ads"
+                 data-swiper-autoplay="6000" swiperSlide>
+                   <a   [href]="item?.link" target="_blank">
+                      <img 
+                      style="max-height:150px;width: 100%;object-fit: contain"
+                      [src]="item?.image?.file?.src" >
+                   </a>
+                 </ng-template>
+             </swiper>
+               </ng-container>
+            
+           </div>
+          <!-- end ads section -->
+          <div class="addComment">
+            <h6 class="p-2 text-white bg-secondary fw-bold">أضف تعليق</h6>
+            <form 
+          [formGroup]="addCommentForm"
+          (ngSubmit)="addComment(addCommentForm.value)"
+            class="row">
+               <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                     <input 
+                     formControlName="name"
+                     type="text" placeholder="الاسم" class="form-control">
+                     <p 
+                     *ngIf="addCommentForm.controls.name?.errors!=null &&
+                     addCommentForm.controls.name.touched
+                     "
+                     class="text-danger my-2">
+                       برجاء ادخال الاسم
+                     </p>
+                  </div>
+               </div>
+               <div class="col-md-6 mb-3">
+                 <div class="form-group">
+                   <input 
+                   formControlName="email"
+                   type="email" placeholder="البريد الالكتروني" class="form-control">
+                   <ng-container *ngIf="addCommentForm.controls.email.touched">
+                     <p 
+                     *ngIf="addCommentForm.controls.email?.errors?.email ||
+                     addCommentForm.controls.email?.errors?.required 
+                     "
+                     class="text-danger my-2">
+                      برجاء ادخال بريد الكتروني صالح
+                     </p>
+                   </ng-container>
+                </div>
+               </div>
+               <div class="col-md-12 mb-3">
+                 <div class="form-group">
+                  <textarea 
+                  formControlName="comment"
+                  name="" id=""  rows="5" placeholder=" التعليق" class="form-control"></textarea>
+                  <p 
+                  *ngIf="addCommentForm.controls.comment?.errors!=null &&
+                  addCommentForm.controls.comment.touched
+                  "
+                  class="text-danger my-2">
+                    برجاء ادخال  التعليق
+                  </p>
+                </div>
+               </div>
+               <div class="col-md-12 d-flex justify-content-end">
+                 <button 
+                 [disabled]="addCommentForm.invalid || addCommentLoading"
+                 class="btn btn-secondary">
+                   ارسال
+                   <i 
+                   *ngIf="addCommentLoading"
+                   class="fas fa-circle-notch fa-spin"></i>
+                 </button>
+               </div>
+            </form>
+            <div
+            *ngIf="comments?.length"
+            class="commentsContanier"
+            style="max-height: 300px;overflow: auto;"
+            >
+               <ul 
+               
+               class="list-unstyled px-0 py-3">
+                 <li 
+                 *ngFor="let comment of comments"
+                 class="d-flex align-items-center mb-3">
+                   <img src="assets/user.png" 
+                   style="width: 40px;height: 40px;border-radius: 50%;margin-left: 10px;"
+                   alt="">
+               <div>
+                 <p 
+                 style="word-break: break-all;"
+                 class="mb-2">{{comment?.name}}</p>
+                 <p 
+                 
+                 style="word-break: break-all;"
+                 class="m-0">{{comment?.comment}}</p>
+               </div>
+                 </li>
+               </ul>
+            </div>
+          <p 
+          *ngIf="!comments?.length"
+            class="my-3">
+             لا يوجد تعليقات
+           </p>
+          </div>
+          
+        </div>
+  
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="news mb-3">
+          <div 
+          
+          *ngFor="let item of ads|slice:0:1"
+          class="advertisment mb-4">
+                 <a   [href]="item?.link" target="_blank">
+                   <img 
+                   style="max-height:150px;width: 100%;object-fit: contain"
+                   [src]="item?.image?.file?.src" >
+                </a>
+            
+           </div>
+          <!-- end ads section -->
+          <div class="socialMedia">
+            <ul class="list-unstyled p-0 d-flex">
+              <li class="instgram">
+                <a 
+                target="_blank" href="https://www.instagram.com/eltimeseg/"
+                >
+                  <i class="fab fa-instagram"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+              <li class="facebook">
+                <a 
+                target="_blank" href="https://www.facebook.com/eltimseg/"
+                >
+                  <i class="fab fa-facebook-square"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+  
+            </ul>
+            <ul class="p-0 list-unstyled d-flex">
+              <li class="youtube">
+                <a 
+                target="_blank" href="https://www.youtube.com/channel/UC6z5cIMQ004W0xJX_3uUzYw"
+                >
+                  <i class="fab fa-youtube"></i>
+                  <span>Subscribe</span>
+                </a>
+              </li>
+              <li class="twitter">
+                <a 
+                target="_blank" href="https://twitter.com/THETIMESEG"
+                >
+                  <i class="fab fa-twitter"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+            </ul>
+            <ul class="p-0 list-unstyled d-flex">
+              <!-- <li class="snapchat">
+                <a>
+                  <i class="fab fa-snapchat-ghost"></i>
+                  <span>Follow</span>
+                </a>
+              </li> -->
+              <li class="pinterest" style="width: 100%;">
+                <a 
+                target="_blank" href="https://www.pinterest.com/eltimeseg/_saved/"
+                class="justify-content-center" >
+                  <i class="fab fa-pinterest-p"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div 
+        *ngIf="mostRead?.length"
+        class="news mb-3">
+          <h2 style="cursor:text" class="title mt-2">الأكثر قراءة</h2>
+          <div class="row">
+            <div 
+            *ngFor="let item of mostRead"
+            class="col-sm-6 col-md-12">
+              <a [routerLink]="['/main/details',item?._id]" >
+                <article class="  d-flex">
+                  <div>
+                    <img [src]="item?.main?.image?.imageBigSize?.file?.src" alt="">
+                  </div>
+                  <h3> {{item?.main?.title  | slice : 0 : 100}}...</h3>
+                </article>
+              </a>
+            </div>
+          
+          </div>
+        </div>
+        <div 
+          
+        *ngFor="let item of ads|slice:1"
+        class="advertisment mb-4">
+               <a   [href]="item?.link" target="_blank">
+                 <img 
+                 style="max-height:150px;width: 100%;object-fit: contain"
+                 [src]="item?.image?.file?.src" >
+              </a>
+          
+         </div>
+        <!-- end ads section -->
+      </div>
+    </div>
+    
+  </section>
+</ng-template>
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+.dashboard {
+    .menu {
+         background-color: #F8F8F8;
+        .image {
+            text-align: center;
+            img {
+                width: 150px;
+                cursor: pointer;
+            }
+            p {
+                text-align: center;
+                margin:7px 0 0 0;
+                word-break: break-word;
+            }
+        }
+     ul {
+        a {
+            cursor: pointer;
+            color: black ;
+            margin: 15px 0;
+            display: block;
+            &:hover {
+                color:#FF4C3B !important
+            }
+        }
+     }
+    }
+    .activeLink { color:#FF4C3B !important}
+}
+@media only screen and (min-width: 992px) {
+    .dashboard {
+        .menu {
+             height: 100vh;overflow: auto;
+        }
+    }
+}
+@media only screen and (max-width: 991px) {
+    .dashboard {
+        background-color: #F8F8F8;
+    }
+}

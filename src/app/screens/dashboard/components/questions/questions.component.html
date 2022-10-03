@@ -1,0 +1,58 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section class="add-article">
+        <h4 class="mb-5">استطلاعات الراي</h4>
+        <button class="btn btn-secondary mb-2">
+            <a class="text-white" routerLink="/dashboard-page/main/add-question" >
+                اضافة استطلاع راي
+        </a></button>
+        <accordion [isAnimated]="true">
+            <accordion-group 
+            *ngFor="let item of questions"
+            class="mb-2" [heading]="item?.title">
+            <ng-template #deleteQuestion>
+                <div class="modal-header">
+                  <h5 class="modal-title pull-left"> تاكيد حذف استطلاع الراي  </h5>
+                  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <button 
+                  (click)="modalRef?.hide()"
+                  class="btn btn-light">الغاء</button>
+                  <button 
+                  [disabled]="deleteLoading"
+                  (click)="deleteQuestionMethod(item?._id)"
+                  class="btn btn-secondary mx-3">
+                  تأكيد   <i 
+                  *ngIf="deleteLoading"
+                  class="fas fa-circle-notch fa-spin"></i>
+                </button>
+                </div>
+              </ng-template>
+          
+              <p>
+                
+                {{item?.title}} 
+                <span
+                class="bg-dark text-white p-1 rounded"
+                *ngIf="item?.deleted"
+                >تم الحذف</span>
+                <i 
+                style="cursor: pointer;"
+                (click)="openModal(deleteQuestion)"
+                class="fas fa-trash-alt d-inline-block me-3"></i></p>
+              <ul>
+                  <li *ngFor="let answer of item?.answers">
+                      {{answer?.title}} {{answer?.count}}
+                  </li>
+              </ul>
+            </accordion-group>
+          </accordion>
+    </section>
+</ng-template>

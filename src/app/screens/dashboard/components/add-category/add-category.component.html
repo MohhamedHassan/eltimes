@@ -1,0 +1,77 @@
+<ng-container *ngIf="getDataLoading;else catContent">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #catContent>
+    <section class="add-category">
+        <h4>{{update ? "تحديث القسم" : "اضافة قسم جديد"}}</h4>
+        <div class="my-3">
+            <button 
+            *ngIf="authService.userProfile?.role?.type=='admin'||
+            authService.userProfile?.role?.type=='supervisor'"
+            class="btn btn-secondary ms-2">
+              <a class="text-white" 
+              routerLink="/dashboard-page/main/add-sub">
+                  اضافة قسم فرعي
+                  <i class="fas fa-plus"></i>
+              </a>
+          </button>
+        </div>
+        <form [formGroup]="addCategoryForm" (ngSubmit)="createCategory(addCategoryForm.value)" class="mt-5">
+            <div class="form-group mb-4">
+                <input formControlName="name" type="text" placeholder="اسم القسم" class="form-control">
+                <p *ngIf="addCategoryForm.controls.name?.errors != null && addCategoryForm.controls.name.touched"
+                    class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div  class="form-group mb-4">
+                <select formControlName="seqHomepage" class="form-select">
+                    <option *ngFor="let item of selectboxOptions" [value]="item?.type">{{item?.name}}</option>
+                </select>
+            </div>
+            <div class="form-group mb-4">
+                <input type="number" min="1" class="form-control" placeholder="ترتيب ظهور القسم في القائمة " formControlName="seq">
+            </div>
+   
+      
+            <div class="form-group my-4">
+                <label for="" class="mb-2">Meta Title</label>
+                <input 
+                formControlName="title"
+                type="text" class="form-control">
+                <p *ngIf="addCategoryForm.controls.title?.errors != null && addCategoryForm.controls.title.touched"
+                class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="form-group my-4">
+                <label for="" class="mb-2">Meta Keywords</label>
+                <input 
+                formControlName="keywords"
+                type="text" class="form-control">
+                <p *ngIf="addCategoryForm.controls.keywords?.errors != null && addCategoryForm.controls.keywords.touched"
+                class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="form-group my-4">
+                <label for="" class="mb-2">Meta Description</label>
+                <textarea 
+                formControlName="desc"
+                type="text" class="form-control"></textarea>
+                <p *ngIf="addCategoryForm.controls.desc?.errors != null && addCategoryForm.controls.desc.touched"
+                class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="mt-5">
+                <button [disabled]="addCategoryForm.invalid || loading" type="submit" class="btn-secondary btn w-100">تم <i
+                        *ngIf="loading" class="fas fa-circle-notch fa-spin"></i></button>
+                <p 
+                *ngIf="error"
+                class="text-danger my-3">
+                    {{error}}
+                </p>        
+            </div>
+        </form>
+    </section>
+</ng-template>

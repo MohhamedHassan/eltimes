@@ -1,0 +1,55 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+  </ng-container>
+  <ng-template #content>
+    <h4 class="mb-5"> {{categoryName}}</h4>
+    <select 
+    #accept
+    (change)="getByStatus(accept.value)"
+    class="form-select mb-3" aria-label="Default select example">
+    <option value="">أختر نوع المقالات</option>
+    <option value="false">المقالات غير المقبولة</option>
+      <option value="true">المقالات المقبولة</option>
+     
+    </select>
+    <ng-container *ngIf="articles?.length;else noArticles">
+      <section class="accept-article">
+        <input 
+        [(ngModel)]="searchValue"
+        type="search" placeholder="بحث" class="mb-3 form-control">
+ 
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">عنوان المقالة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr [routerLink]="['/dashboard-page/main/article-details',item?._id]" *ngFor="let item of articles  | serachArticleTitle : searchValue;let articleIndex =index">
+              <th scope="row">{{articleIndex+1}}</th>
+              <td>{{item?.main?.title}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div 
+        style="text-align: left;direction: ltr;"
+        class="row">
+            <div class="col-xs-12 col-12">
+              <pagination [totalItems]="totalCount"
+              [maxSize]="maxSize"
+              (pageChanged)="pageChanged($event)"></pagination>
+            </div>
+          </div>
+      </section>
+    </ng-container>
+    <ng-template #noArticles>
+      <p class="my-5">لا توجد مقالات</p>
+    </ng-template>
+    
+  
+  </ng-template>
+  

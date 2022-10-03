@@ -1,0 +1,298 @@
+<header class="d-none d-lg-block mb-2 bg-white">
+
+  <div class="my-2 row align-items-center">
+    <div class="col-md-3">
+      <a 
+      aria-label="Eltimes EG home page"
+      routerLink="/main/home">
+        <img style="cursor: pointer;"  src="assets/times.png" class="w-100" alt="Eltimes EG home page">
+      </a>
+      
+    </div>
+    <div class="col-md-3">
+      <h6 
+      *ngIf="mangersNames?.first"
+      class="mb-3">
+        رئيس مجلس الادارة :  
+        <span class="text-secondary d-block mt-2">{{mangersNames?.first}}</span>
+      </h6>
+      <h6
+      *ngIf="mangersNames?.second"
+      >
+        رئيس التحرير :  
+        <span class="text-secondary d-block mt-2">{{mangersNames?.second}}</span></h6>
+    </div>
+    <div class="col-md-6">
+      <div class="pb-2 d-flex justify-content-center align-items-center ">
+        <a 
+        aria-label="Eltimes EG Live"
+        target="_blank"
+        href="https://www.facebook.com/eltimeseglive">
+          <div class="d-flex align-items-center ms-2" style="cursor: pointer;">
+            <img style="cursor: pointer;width: 60px;" src="assets/times.png" alt="Eltimes EG Live">
+            <span class="live">LIVE</span>
+          </div>
+        </a>
+        <ul class="socialMedia list-unstyled m-0 p-0 d-flex">
+          <li>
+            <a
+            aria-label="Eltimes EG Pinterest account"
+            target="_blank"
+            href="https://www.pinterest.com/eltimeseg/_saved/"
+            > 
+            <i style="background-color:  #DF0019;;" class="fab fa-pinterest-p"></i></a>
+          </li>
+          <li>
+            <a
+            aria-label="Eltimes EG Youtube account"
+            target="_blank"
+            href="https://www.youtube.com/channel/UC6z5cIMQ004W0xJX_3uUzYw"
+
+            > <i style="background-color: #FF0000;;" class="fab fa-youtube"></i></a>
+          </li>
+          <!-- <li>
+            <a> <i style="background-color: #F7F400;;" class="fab fa-snapchat-ghost"></i></a>
+          </li> -->
+          <li>
+            <a
+            
+            aria-label="Eltimes EG Twitter account"
+            target="_blank" href="https://twitter.com/THETIMESEG"
+            > <i style="background-color:  #1D9BF0;;" class="fab fa-twitter"></i></a>
+          </li>
+          <li>
+            <a
+            aria-label="Eltimes EG instagram account"
+            target="_blank" href="https://www.instagram.com/eltimeseg/"
+            >  
+              <i
+                style="       background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);"
+                class="fab fa-instagram"></i></a>
+          </li>
+          <li>
+            <a
+            aria-label="Eltimes EG facebook account"
+            target="_blank" href="https://www.facebook.com/eltimseg/"
+            ><i style="background-color: #1B74E4;;" class="fab fa-facebook-f"></i></a>
+          </li>
+
+
+
+
+
+        </ul>
+
+      </div>
+      <ng-container *ngIf="adsService.headerAds?.length==1">
+        <a   [href]="adsService.headerAds[0]?.link" target="_blank">
+          <img 
+          style="max-height:150px;width: 100%;object-fit: contain"
+          [src]="adsService.headerAds[0]?.image?.file?.src" >
+       </a>
+      </ng-container>
+      <ng-container *ngIf="adsService.headerAds?.length>1">
+ 
+        <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+        [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+        [navigation]="false" class=" ">
+        <ng-template 
+        *ngFor="let item of adsService.headerAds"
+        data-swiper-autoplay="6000" swiperSlide>
+          <a   [href]="item?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="item?.image?.file?.src" >
+          </a>
+        </ng-template>
+    </swiper>
+      </ng-container>
+    </div>
+  </div>
+  <!-- end upper header -->
+  <nav class="fixed-top">
+    <div class="contaienr">
+      <div class="row justify-content-center py-2 bg-white">
+        <div class="col-md-10 d-flex justify-content-center align-items-center">
+       <a 
+       aria-label="Eltimes EG home page"
+       routerLink="/main/home">
+        <img  src="assets/times.png" class="ms-5" style="width: 100px;cursor: pointer;" alt="">
+       </a>
+          <div class="d-flex align-items-center ">
+            <i class="far ms-2 text-danger fa-calendar-alt"></i>
+           {{todayDate| date : 'fullDate' : undefined : 'ar'}}
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-10 d-flex justify-content-center">
+          <ul 
+          class="m-0 list-unstyled d-flex   px-3">
+          <li
+          (click)="clearSub()"
+          >
+          <a 
+          routerLinkActive="navBarActive"
+          routerLink="/main/home" 
+          >
+              <i class="fas fa-home"></i> الرئيسية
+           </a>
+          </li>
+            <ng-container *ngIf="smallNavbarService.containerOfSubCategory?.length<1">
+              <li 
+         
+              *ngFor="let category of categories | slice  : 0 : 7"
+              class="moree position-relative">
+                  <a 
+                  routerLinkActive="navBarActive"
+                  [routerLink]="category?.seqHomepage=='5' ? '/main/art/'+category?._id : category?.seqHomepage=='4' ? '/main/sports/'+category?._id : category?.seqHomepage=='17' ? '/main/woman/'+category?._id  : category?.seqHomepage=='9' ? '/main/articles/'+category?._id : '/main/category/'+category?._id+'/false/'+category?.title"
+                  (click)="routeToMainCategory(category?.subcategories,category?._id,category?.seqHomepage,category?.title)"
+                  >
+                    {{category?.title}} 
+                    <i
+                    *ngIf="category?.subcategories?.length"
+                    class="fas fa-sort-down"></i>
+                  </a>
+                  <ul 
+                  *ngIf="category?.subcategories?.length"
+                  class="m-0 p-0 list-unstyled dropdownMenuu">
+                    <li
+                    *ngFor="let subCategory of category?.subcategories"
+                    >
+                      <a 
+                      routerLinkActive="navBarActive"
+                      [routerLink]="['/main/category',subCategory?._id,true,subCategory?.title]"
+                      
+                   >
+                        {{subCategory?.title}}
+                      </a>
+                    </li>
+                  </ul>
+              </li>
+              <li 
+              *ngIf="categories?.length>7"
+              class="moree position-relative">
+                <p class="m-0">المزيد <i class="fas fa-sort-down"></i>  </p>
+                  <ul 
+                  style="max-height: 50vh;overflow:auto;"
+                  class="m-0 p-0 list-unstyled dropdownMenuu">
+                  <li 
+                  *ngFor="let category of categories | slice  : 7"
+                  class="moree position-relative">
+                      <a  
+                      routerLinkActive="navBarActive"
+                      [routerLink]="category?.seqHomepage=='5' ? '/main/art/'+category?._id : category?.seqHomepage=='4' ? '/main/sports/'+category?._id : category?.seqHomepage=='17' ? '/main/woman/'+category?._id  : category?.seqHomepage=='9' ? '/main/articles/'+category?._id : '/main/category/'+category?._id+'/false/'+category?.title"
+                      (click)="routeToMainCategory(category?.subcategories,category?._id,category?.seqHomepage,category?.title)"
+                      
+                   >
+                        {{category?.title}}
+                      </a>
+                  </li>
+                  </ul>
+              
+              </li>
+            </ng-container>
+            <ng-container *ngIf="smallNavbarService.containerOfSubCategory?.length">
+              <li>
+                <a  
+                routerLinkActive="navBarActive"
+                [routerLink]="smallNavbarService.containerOfSubCategory[0]?.Cattype=='5' ? '/main/art/'+smallNavbarService.containerOfSubCategory[0]?.id : smallNavbarService.containerOfSubCategory[0]?.Cattype=='4' ? '/main/sports/'+smallNavbarService.containerOfSubCategory[0]?.id : smallNavbarService.containerOfSubCategory[0]?.Cattype=='17' ? '/main/woman/'+smallNavbarService.containerOfSubCategory[0]?.id  :smallNavbarService.containerOfSubCategory[0]?.Cattype=='9' ? '/main/articles/'+smallNavbarService.containerOfSubCategory[0]?.id : '/main/category/'+smallNavbarService.containerOfSubCategory[0]?.id+'/false/'+smallNavbarService.containerOfSubCategory[0].name"
+               >{{smallNavbarService.containerOfSubCategory[0].name}}</a>
+              </li>
+              <li
+              *ngFor="let subItem of smallNavbarService.containerOfSubCategory | slice : 1"
+              >
+                <a  
+                routerLinkActive="navBarActive"
+                [routerLink]="['/main/category',subItem?._id,true,subItem?.title]"
+                
+             >{{subItem?.title}}</a>
+              </li>
+            </ng-container>
+          
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </nav>
+  <!-- end main nav bar -->
+
+</header>
+<!-- end header -->
+<nav class="container-fluid bg-white  fixed-top py-2 smallNav d-lg-none">
+  <div class="d-flex mb-3 align-items-center justify-content-between">
+    <div class="logo">
+      <img style="width: 100px;" routerLink="/main/home" src="assets/times.png" alt="">
+    </div>
+    <!-- end logo -->
+    <div class="menuuIcon">
+      <i (click)="showSmallNavBArMethod()" class="fas fa-bars"></i>
+    </div>
+    <!-- end bars icon -->
+  </div>
+ 
+  <div  *ngIf="mangersNames?.first">
+    <small class="text-center text-danger m-0 d-block">
+      رئيس مجلس الادارة : {{mangersNames?.first}}
+    </small>
+  </div>
+  <div *ngIf="mangersNames?.second">
+    <small class="text-center text-danger m-0 d-block">
+      رئيس التحرير : {{mangersNames?.second}}
+    </small>
+  </div>
+  <!-- end manager section -->
+  <div 
+  (click)="closeSmallNavBArMethod()"
+  *ngIf="smallNavbarService.showSmallNavBAr" class="sideNav">
+    <ul (click)="closeSmallNavBArMethod()" [ngStyle]="{
+        right:menuAnimation ? '0' : '-100%'
+      }" class="list-unstyled">
+      <li (click)="closeSmallNavBArMethod()"><a><i class="fas fa-times"></i></a></li>
+
+      <li
+      (click)="clearSub()"
+      >
+      <a 
+      routerLinkActive="navBarActive"
+      routerLink="/main/home" 
+      >
+          <i class="fas fa-home"></i> الرئيسية
+       </a>
+      </li>
+        <ng-container *ngIf="!smallNavbarService.containerOfSubCategory?.length">
+          <li 
+          *ngFor="let category of categories"
+          class="moree position-relative">
+              <a 
+              routerLinkActive="navBarActive"
+              [routerLink]="category?.seqHomepage=='5' ? '/main/art/'+category?._id : category?.seqHomepage=='4' ? '/main/sports/'+category?._id : category?.seqHomepage=='17' ? '/main/woman/'+category?._id  : category?.seqHomepage=='9' ? '/main/articles/'+category?._id : '/main/category/'+category?._id+'/false/'+category?.title"
+              (click)="routeToMainCategory(category?.subcategories,category?._id,category?.seqHomepage,category?.title)"
+              >
+                {{category?.title}} 
+              </a>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="smallNavbarService.containerOfSubCategory?.length">
+          <li>
+            <a  
+            routerLinkActive="navBarActive"
+            [routerLink]="smallNavbarService.containerOfSubCategory[0]?.Cattype=='5' ? '/main/art/'+smallNavbarService.containerOfSubCategory[0]?.id : smallNavbarService.containerOfSubCategory[0]?.Cattype=='4' ? '/main/sports/'+smallNavbarService.containerOfSubCategory[0]?.id : smallNavbarService.containerOfSubCategory[0]?.Cattype=='17' ? '/main/woman/'+smallNavbarService.containerOfSubCategory[0]?.id  :smallNavbarService.containerOfSubCategory[0]?.Cattype=='9' ? '/main/articles/'+smallNavbarService.containerOfSubCategory[0]?.id : '/main/category/'+smallNavbarService.containerOfSubCategory[0]?.id+'/false/'+smallNavbarService.containerOfSubCategory[0].name"
+           >{{smallNavbarService.containerOfSubCategory[0].name}}</a>
+          </li>
+          <li
+          *ngFor="let subItem of smallNavbarService.containerOfSubCategory | slice : 1"
+          >
+            <a  
+            routerLinkActive="navBarActive"
+            [routerLink]="['/main/category',subItem?._id,true,subItem?.title]"
+            
+         >{{subItem?.title}}</a>
+          </li>
+        </ng-container>
+    </ul>
+  </div>
+</nav>
+<!-- end small nav bar for mobile screen -->

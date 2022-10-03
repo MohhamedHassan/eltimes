@@ -1,0 +1,63 @@
+<ng-container *ngIf="getDataLoading;else catContent">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #catContent>
+    <section class="add-category">
+        <h4>{{update ? 'تحديث الفسم الفرعي' : 'اضافة قسم فرعي'}}</h4>
+        <form [formGroup]="addSubCategoryForm" (ngSubmit)="createSubCategory(addSubCategoryForm.value)" class="mt-5">
+            <div class="form-group mb-4">
+                <input formControlName="name" type="text" placeholder="اسم القسم الفرعي " class="form-control">
+                <p *ngIf="addSubCategoryForm.controls.name?.errors != null && addSubCategoryForm.controls.name.touched"
+                    class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div  class="form-group mb-4">
+                <label for="">أختر القسم</label>
+                <select formControlName="categories" class="form-select">
+                    <option *ngFor="let item of categoriesNames" [value]="item?._id">{{item?.title}}</option>
+                </select>
+            </div>
+   
+      
+            <div class="form-group my-4">
+                <label for="" class="mb-2">Meta Title</label>
+                <input 
+                formControlName="title"
+                type="text" class="form-control">
+                <p *ngIf="addSubCategoryForm.controls.title?.errors != null && addSubCategoryForm.controls.title.touched"
+                class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="form-group my-4">
+                <label for="" class="mb-2">Meta Keywords</label>
+                <input 
+                formControlName="keywords"
+                type="text" class="form-control">
+                <p *ngIf="addSubCategoryForm.controls.keywords?.errors != null && addSubCategoryForm.controls.keywords.touched"
+                class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="form-group my-4">
+                <label for="" class="mb-2">Meta Description</label>
+                <textarea 
+                formControlName="desc"
+                type="text" class="form-control"></textarea>
+                <p *ngIf="addSubCategoryForm.controls.desc?.errors != null && addSubCategoryForm.controls.desc.touched"
+                class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="mt-5">
+                <button [disabled]="addSubCategoryForm.invalid || loading" type="submit" class="btn-secondary btn w-100">تم <i
+                        *ngIf="loading" class="fas fa-circle-notch fa-spin"></i></button>
+                <p 
+                *ngIf="error"
+                class="text-danger my-3">
+                    {{error}}
+                </p>        
+            </div>
+        </form>
+    </section>
+</ng-template>

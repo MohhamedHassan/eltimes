@@ -1,0 +1,1179 @@
+
+
+<ng-container *ngIf="loading;else mainContent">
+  <div class="row mt-4">
+    <div 
+    *ngFor="let item of navBarService.loadingCount"
+    class="col-sm-6  col-md-4 mb-4">
+        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{
+            width: '100%',
+            height: '150px',
+            'border-radius': '10px',
+            margin:0
+        }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2"  [theme]="{
+            width: '100%',
+            height: '5px',
+            'margin-bottom':'2px',
+            'border-radius': '10px'
+        }"></ngx-skeleton-loader>
+    </div>
+  </div>
+  </ng-container>
+  <ng-template #mainContent>
+    <!-- news?.posts.slice().reverse() -->
+  <div 
+  *ngIf="news?.posts?.length"
+  class="newsLine mb-2 py-1  d-flex">
+    <marquee #marqueeOne (mouseover)="marqueeOne.stop();" (mouseout)="marqueeOne.start()" behavior="" direction="right">
+      <ng-container *ngFor="let i of mainnewsLine">
+        <span
+        style="cursor: pointer;"
+        [routerLink]="['/main/details',i?._id]"
+        > {{i?.main?.title}}
+        </span>
+        <span>
+          <img src="assets/transparent.png" class="marqueeLogo" alt="eltimes eg">
+        </span>
+      </ng-container>
+      
+     
+    </marquee>
+  </div>
+  <!-- news Line -->
+
+  <section 
+  *ngIf="newsSlider?.length"
+  class="sliderSection mb-2">
+    <div class="row align-items-center">
+   
+      <div class=" mb-2 m-md-0 col-md-8">
+        <div class="d-flex flex-column flex-md-row">
+  
+          <ng-container *ngFor="let li of newsSlider|slice:0:4">
+       
+              <div *ngIf="li?.show" class=" sliderImage" style="height: 400px;">
+                <a [routerLink]="['/main/details',li?._id]">
+                <img 
+                loading="lazy"
+                [src]="li?.main?.image?.imageBigSize?.file?.src" [alt]="li?.main?.title">
+                <p class="sliderImageText text-center  m-0">{{li?.main?.title | slice : 0 : 70}} المزيد</p>
+              </a>
+              </div>
+          </ng-container>
+          <div class="left d-none d-md-block">
+            <ul class="list-unstyled sliderUL h-100 p-0 m-0">
+               <li 
+               *ngFor="let liItem of newsSlider|slice:0:4;let i = index"
+               class="h-25">
+                <h2 
+                
+                (click)="homeSlideShowOnClick(i)" [class.active]="liItem?.show" >
+                   {{liItem?.main?.title | slice : 0 : 70}}
+                   المزيد
+                </h2>
+                </li>
+            </ul>
+          </div>
+  
+        </div>
+      </div>
+      <div class=" col-md-4 text-center">
+        <ng-container *ngIf="areaone?.length==1">
+          <a   
+          aria-label="Eltimes EG ads"
+          [href]="areaone[0]?.link" target="_blank">
+            <img 
+            loading="lazy"
+            alt="Eltimes EG ads"
+            style="max-height:150px;width: 100%;object-fit: contain"
+            [src]="areaone[0]?.image?.file?.src" >
+         </a>
+        </ng-container>
+        <ng-container *ngIf="areaone.length>1">
+   
+          <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+          [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+          [navigation]="false" class=" ">
+          <ng-template 
+          *ngFor="let item of areaone"
+          data-swiper-autoplay="6000" swiperSlide>
+            <a   
+            aria-label="Eltimes EG ads"
+            [href]="item?.link" target="_blank">
+               <img 
+               loading="lazy"
+               alt="Eltimes EG ads"
+
+               style="max-height:150px;width: 100%;object-fit: contain"
+               [src]="item?.image?.file?.src" >
+            </a>
+          </ng-template>
+      </swiper>
+        </ng-container>
+      </div>
+      <!-- end ads -->
+    </div>
+  </section>
+  
+  <!-- end slider -->
+  <div 
+  *ngIf="urgent?.length"
+  class="newsLine  mb-2">
+    <div class="align-items-center d-flex">
+      <p 
+      class="m-0 breakNews"> عاجل</p>
+      <marquee #marqueeTwo (mouseover)="marqueeTwo.stop();" (mouseout)="marqueeTwo.start()" behavior="" direction="right">
+        <ng-container *ngFor="let item of urgent.slice().reverse()">
+          <span
+          style="cursor: pointer;"
+          [routerLink]="['/main/details',item?._id]"
+          >{{item?.main?.title}}</span>
+          <span>
+            <img 
+            [alt]="item?.main?.title"
+            loading="lazy"
+            src="assets/times.png" class="marqueeLogo" >
+          </span>
+        </ng-container>
+        
+      </marquee>
+  
+    </div>
+  </div>
+  <!-- end break news Line -->
+  <section class="newsImages ">
+    <div class="row">
+      <div 
+      *ngFor="let item of urgent|slice:0:6"
+      class=" col-md-4 mb-4">
+        <div class="parentOfLabel position-relative">
+          <a    [routerLink]="['/main/details',item?._id]" >
+            <img 
+            loading="lazy"
+            [src]="item?.main?.image?.image?.file?.src" 
+            [alt]="item?.main?.title">
+            <p class="label">{{item?.main?.title | slice : 0 : 100}} المزيد</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end break news images -->
+  <div 
+  *ngIf="areatwo?.length"
+  class="advertisment mb-4"> 
+  <ng-container *ngIf="areatwo?.length==1">
+    <a   
+    aria-label="Eltimes EG ads"
+    [href]="areatwo[0]?.link" target="_blank">
+      <img 
+      loading="lazy"
+      alt="Eltimes EG ads"
+      style="max-height:150px;width: 100%;object-fit: contain"
+      [src]="areatwo[0]?.image?.file?.src" >
+   </a>
+  </ng-container>
+  <ng-container *ngIf="areatwo.length>1">
+
+    <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+    [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+    [navigation]="false" class=" ">
+    <ng-template 
+    *ngFor="let item of areatwo"
+    data-swiper-autoplay="6000" swiperSlide>
+      <a   
+      aria-label="Eltimes EG facebook"
+      [href]="item?.link" target="_blank">
+         <img 
+         loading="lazy"
+         alt="eltimes eg ads"
+         style="max-height:150px;width: 100%;object-fit: contain"
+         [src]="item?.image?.file?.src" >
+      </a>
+    </ng-template>
+</swiper>
+  </ng-container>
+   
+  </div>
+  <!-- end ads section -->
+  <section class="news PoliticsAndNews">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div 
+          *ngIf="politics?.posts?.length"
+          class="col-sm-6 mb-4">
+            <div>
+              <a [routerLink]="['/main/category',politics?._id,false,politics?.title]" >
+                <h2 
+              class="title">{{politics?.title}}</h2>
+              </a>
+              <a [routerLink]="['/main/details',politics?.posts[0]?._id]">
+                <article>
+                  <img 
+                  loading="lazy"
+
+                  [src]="politics?.posts[0]?.main?.image?.image?.file?.src" class="w-100 " [alt]="politics?.posts[0]?.main?.title">
+                  <h3> {{politics?.posts[0]?.main?.title| slice : 0 : 100}}...
+                  </h3>
+                </article>
+              </a>
+              <a 
+              *ngFor="let politic of politics?.posts | slice : 1 : 3"
+              [routerLink]="['/main/details',politic?._id]" >
+                <article class="  d-flex">
+                  <div>
+                    <img  
+                    loading="lazy"
+                    [src]="politic?.main?.image?.image?.file?.src" [alt]="politic?.main?.title">
+                  </div>
+                  <h3> 
+                    {{politic?.main?.title | slice : 0 : 90}}...
+                  </h3>
+                </article>
+              </a>
+            </div>
+          </div>
+          <div 
+          *ngIf="news?.posts?.length"
+          class="col-sm-6 mb-4">
+            <div>
+              <a [routerLink]="['/main/category',news?._id,false,news?.title]" >
+                <h2 
+              class="title">{{news?.title}}</h2>
+              </a>
+            <a [routerLink]="['/main/details',news?.posts[0]?._id]">
+              <article>
+                <img 
+                loading="lazy"
+                [src]="news?.posts[0]?.main?.image?.image?.file?.src"
+                 class="w-100 " [alt]="news?.posts[0]?.main?.title">
+                <h3> {{news?.posts[0]?.main?.title| slice : 0 : 100}}...</h3>
+              </article>
+            </a>
+            <a 
+            [routerLink]="['/main/details',neww?._id]"
+            *ngFor="let neww of news?.posts | slice : 1 : 3"
+            >
+            <article class="  d-flex">
+              <div>
+            <img 
+            loading="lazy"
+            [src]="neww?.main?.image?.image?.file?.src" [alt]="neww?.main?.title">  
+            </div>
+              
+              <h3> {{neww?.main?.title |slice : 0 : 90}}...</h3>
+            </article>
+            </a>
+            
+            </div>
+          </div>
+        </div>
+        <div 
+        *ngIf="areathree?.length"
+        class="advertisment mb-4">
+        <ng-container *ngIf="areathree?.length==1">
+          <a   
+          aria-label="Eltimes EG ads"
+      
+          [href]="areathree[0]?.link" target="_blank">
+            <img 
+            alt="Eltimes EG ads"
+            loading="lazy"
+            style="max-height:150px;width: 100%;object-fit: contain"
+            [src]="areathree[0]?.image?.file?.src" >
+         </a>
+        </ng-container>
+        <ng-container *ngIf="areathree.length>1">
+      
+          <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+          [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+          [navigation]="false" class=" ">
+          <ng-template 
+          *ngFor="let item of areathree"
+          data-swiper-autoplay="6000" swiperSlide>
+            <a   
+            aria-label="Eltimes EG ads"
+            [href]="item?.link" target="_blank">
+               <img 
+               alt="Eltimes EG ads"
+               loading="lazy"
+               style="max-height:150px;width: 100%;object-fit: contain"
+               [src]="item?.image?.file?.src" >
+            </a>
+          </ng-template>
+      </swiper>
+        </ng-container>
+         
+        </div>
+        <!-- end ads section -->
+        <ng-container *ngIf="accedint?.posts?.length">
+          <a [routerLink]="['/main/category',accedint?._id,false,accedint?.title]" >
+            <h2 
+          class="title">{{accedint?.title}}</h2>
+          </a>
+          <div class="row">
+            <div class="col-sm-6 mb-4">
+           <a [routerLink]="['/main/details',accedint?.posts[0]?._id]">
+            <article 
+              
+            style="height: 247px;">
+              <img 
+              loading="lazy"
+              style="height:176px" 
+              [src]="accedint?.posts[0]?.main?.image?.image?.file?.src"
+               class="w-100 " [alt]="accedint?.posts[0]?.main?.title">
+              <h3> {{accedint?.posts[0]?.main?.title  | slice : 0 : 50}}... </h3>
+            </article>
+           </a>
+    
+            </div>
+            <div class="col-sm-6 mb-4">
+              <a 
+              [routerLink]="['/main/details',item?._id]"
+              *ngFor="let item of accedint?.posts | slice : 1 : 3"
+              >
+                <article class="  d-flex">
+                  <div>
+                    <img 
+                    loading="lazy"
+                    [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+                  </div>
+                  <h3> {{item?.main?.title | slice : 0 : 100}}... </h3>
+                </article>
+    
+              </a>
+            </div>
+    
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="socialMedia mb-4">
+          <ul class="list-unstyled p-0 d-flex">
+            <li class="instgram">
+              <a  target="_blank" href="https://www.instagram.com/eltimeseg/">
+                <i class="fab fa-instagram"></i>
+                <span>Follow</span>
+              </a>
+            </li>
+            <li class="facebook">
+              <a target="_blank" href="https://www.facebook.com/eltimseg/">
+                <i class="fab fa-facebook-square"></i>
+                <span>Follow</span>
+              </a>
+            </li>
+  
+          </ul>
+          <ul class="p-0 list-unstyled d-flex">
+            <li class="youtube">
+              <a href="https://www.youtube.com/channel/UC6z5cIMQ004W0xJX_3uUzYw"
+              target="_blank">
+                <i class="fab fa-youtube"></i>
+                <span>Subscribe</span>
+              </a>
+            </li>
+            <li class="twitter">
+              <a    target="_blank" href="https://twitter.com/THETIMESEG">
+                <i class="fab fa-twitter"></i>
+                <span>Follow</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="p-0 list-unstyled d-flex">
+            <!-- <li class="snapchat">
+              <a>
+                <i class="fab fa-snapchat-ghost"></i>
+                <span>Follow</span>
+              </a>
+            </li> -->
+            <li class="pinterest" style="width: 100%;text-align: center;">
+              <a href="https://www.pinterest.com/eltimeseg/_saved/"
+              target="_blank" class="justify-content-center">
+                <i class="fab fa-pinterest-p"></i>
+                <span>Follow</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ng-container *ngIf="missSlider?.length">
+          <h2 
+          style="cursor: auto;"
+          class="title mt-2">لا تفوتك هذه الاخبار</h2>
+          <div 
+          [style.maxHeight]="areathree?.length ? '880px' : '680px'"
+          style="overflow: hidden;"
+          class="row">
+            <div class="col-sm-6 col-md-12 mb-4">
+                <a 
+                [routerLink]="['/main/details',item?._id]"
+                *ngFor="let item of missSlider|slice:0:7 ">
+                  <article class="d-flex">
+                    <div>
+                      <img  
+                      loading="lazy"
+                      [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+                    </div>
+                    <h3> {{item?.main?.title|slice:0:70}}...</h3>
+                  </article>
+                </a>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+  <!-- end PoliticsAndNews -->
+  <section class="news sportsSection">
+    <div 
+    *ngIf="sport?.posts?.length"
+    class="newsLine mb-2 ">
+      <div class="align-items-center d-flex">
+        <a [routerLink]="['/main/sports',sport?._id]">
+          <p 
+          class="m-0 notbreakNews">{{sport?.title}}</p>
+        </a>
+        <marquee #marqueeThree (mouseover)="marqueeThree.stop();" (mouseout)="marqueeThree.start()" behavior=""
+          direction="right">
+          <ng-container *ngFor="let item of sport?.posts.slice().reverse()">
+            <span
+            style="cursor: pointer;"
+            [routerLink]="['/main/details',item?._id]"
+            > {{item?.main?.title}} </span>
+            <span>
+              <img src="assets/times.png" class="marqueeLogo" alt="eltimes eg">
+            </span>
+          </ng-container> 
+        </marquee>
+  
+      </div>
+    </div>
+    <!-- news Line -->
+    <div 
+    *ngIf="sportsSlider?.length"
+    class="row imagesSection">
+      <ng-container *ngFor="let item of sportsSlider|slice:0:4;let i = index">
+        <div *ngIf="item?.show" class="col-md-6 mb-4 rightSection">
+          <div class="parentOfLabel position-relative">
+              <a [routerLink]="['/main/details',item?._id]">
+                <img 
+                loading="lazy"
+                [src]="item?.main?.image?.imageBigSize?.file?.src" [alt]="item?.main?.title">
+                <p class="label big">{{item?.main?.title|slice:0:50}}...</p>
+              </a>
+          </div>
+        </div>
+      </ng-container>
+      <div class="col-md-6 d-none d-md-block">
+        <div class="row leftSection">
+          <div 
+          
+          *ngFor="let item of sportsSlider|slice:0:4;let i = index" class="col-6 mb-4 ">
+            <div class="parentOfLabel position-relative">
+                <a [routerLink]="['/main/details',item?._id]">
+                  <img 
+                  loading="lazy"
+                  [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+                  <p class="label">{{item?.main?.title|slice:0:50}}...</p>
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end sports section -->
+  <section 
+  *ngIf="art?.posts?.length"
+  class="news ELFNsection">
+    <div class="newsLine mb-2 ">
+      <div class="align-items-center d-flex">
+        <a [routerLink]="['/main/art',art?._id]">
+          <p 
+          class="m-0 notbreakNews">{{art?.title}}</p>
+        </a>
+        <marquee #marqueeFour (mouseover)="marqueeFour.stop();" (mouseout)="marqueeFour.start()" behavior=""
+          direction="right">
+          <ng-container *ngFor="let item of art?.posts.slice().reverse()">
+            <span
+            [routerLink]="['/main/details',item?._id]"
+            style="cursor: pointer;"
+            > {{item?.main?.title}}</span>
+            <span>
+              <img src="assets/times.png" class="marqueeLogo" alt="eltimes eg">
+            </span>
+          </ng-container>
+          
+        </marquee>
+  
+      </div>
+    </div>
+    <!-- news Line -->
+    <div class="elfn newsImages">
+      <div class="row">
+        <div 
+        *ngFor="let item of art?.posts | slice : 0 : 6"
+        class="col-sm-6 col-md-4 mb-4 ">
+          <div class="parentOfLabel position-relative">
+            <a [routerLink]="['/main/details',item?._id]" >
+              <img 
+              loading="lazy"
+              [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title ">
+              <p class="label">{{item?.main?.title  | slice : 0 : 100}}</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end Elfn section -->
+  <div 
+  *ngIf="areafour?.length"
+  class="advertisment mb-4">
+  <ng-container *ngIf="areafour?.length==1">
+    <a   
+    aria-label="Eltimes EG ads"
+    [href]="areafour[0]?.link" target="_blank">
+      <img 
+      loading="lazy"
+      alt="eltimes eg ads"
+      style="max-height:150px;width: 100%;object-fit: contain"
+      [src]="areafour[0]?.image?.file?.src" >
+   </a>
+  </ng-container>
+  <ng-container *ngIf="areafour.length>1">
+
+    <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+    [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+    [navigation]="false" class=" ">
+    <ng-template 
+    *ngFor="let item of areafour"
+    data-swiper-autoplay="6000" swiperSlide>
+      <a   
+      aria-label="Eltimes EG ads"
+      [href]="item?.link" target="_blank">
+         <img 
+         loading="lazy"
+         alt="eltimes eg ads"
+         style="max-height:150px;width: 100%;object-fit: contain"
+         [src]="item?.image?.file?.src" >
+      </a>
+    </ng-template>
+</swiper>
+  </ng-container>
+   
+   
+  </div>
+  <!-- end ads section -->
+  <section class="news arabWorldSection">
+    <div class="row">
+      <div 
+      *ngIf="world?.posts?.length"
+      class="col-sm-6  col-md-4 mb-4">
+        <div>
+          <a [routerLink]="['/main/category',world?._id,false,world?.title]" >
+            <h2
+          class="title">{{world?.title}}</h2>
+          </a>
+          <a 
+          [routerLink]="['/main/details',world?.posts[0]?._id]"
+          >
+            <article>
+              <img 
+              loading="lazy"
+              [src]="world?.posts[0]?.main?.image?.image?.file?.src" class="w-100" 
+              [alt]="world?.posts[0]?.main?.title">
+              <h3> {{world?.posts[0]?.main?.title | slice : 0 : 100}}... </h3>
+            </article>
+          </a>
+          <a  
+          *ngFor="let item of world?.posts | slice : 1 : 3"
+          [routerLink]="['/main/details',item?._id]">
+          <article 
+          class="  d-flex">
+                <div>
+                  <img 
+                  laoding="lazy"
+                  [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+                </div>
+                <h3> {{item?.main?.title | slice : 0 : 90}}... </h3>
+            
+          </article>
+        </a>
+        </div>
+      </div>
+      <div 
+      *ngIf="arabic?.posts?.length"
+      class="col-sm-6  col-md-4 mb-4">
+        <div>
+          <a [routerLink]="['/main/category',arabic?._id,false,arabic?.title]" >
+            <h2 
+          class="title">{{arabic?.title}}</h2>
+          </a>
+          <a [routerLink]="['/main/details',arabic?.posts[0]?._id]">
+            <article>
+              <img 
+              loading="lazy"
+              [src]="arabic?.posts[0]?.main?.image?.image?.file?.src" class="w-100" 
+              [alt]="arabic?.posts[0]?.main?.title">
+              <h3> {{arabic?.posts[0]?.main?.title | slice : 0 : 100}}... </h3>
+            </article>
+          </a>
+          <a 
+          [routerLink]="['/main/details',item?._id]"
+          *ngFor="let item of arabic?.posts |slice : 1 : 3"
+          href="">
+            <article class="  d-flex">
+            <div>
+              <img 
+              loading="lazy"
+
+              [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+            </div>
+              <h3>{{item?.main?.title | slice : 0 : 90}} </h3>
+            </article>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-6  col-md-4 mb-4">
+        <ng-container *ngIf="selected?.posts?.length">
+          <a [routerLink]="['/main/category',selected?._id,false,selected?.title]" >
+            <h2 
+          class="title">{{selected?.title}}</h2>
+          </a>
+          <a [routerLink]="['/main/details',selected?.posts[0]?._id]">
+            <article>
+              <img 
+              loading="lazy"
+              [src]="selected?.posts[0]?.main?.image?.image?.file?.src" class="w-100" 
+              [alt]="selected?.posts[0]?.main?.title">
+              <h3> {{selected?.posts[0]?.main?.title | slice : 0 : 100}}... </h3>
+            </article>
+          </a>
+     
+        </ng-container>
+        <ng-container *ngIf="opinion?.posts?.length">
+          <a [routerLink]="['/main/articles',opinion?._id]" >
+            <h2 
+          class="title">{{opinion?.title}}</h2>
+          </a>
+        <div class="row author">
+          <div 
+          *ngFor="let item of opinion?.posts | slice : 0 : 4"
+          class="col-6 col mb-2">
+            <a 
+           
+            [routerLink]="['/main/details',item?._id]"
+            >
+              <div class="d-flex">
+                <img  
+                style="object-fit: cover;"
+                loading="lazy"
+                [src]="item?.main?.image?.image?.file?.src" [alt]="item?.writer?.name">
+                <div>
+                  <small 
+                  class="d-block " style="color:black;text-align: right;" >{{item?.writer?.name}}</small>
+                  <small 
+                  style="text-align: right;"
+                  class="d-block">
+                  {{item?.main?.title | slice : 0 : 50}}...
+                
+                </small>
+                </div>
+    
+              </div>
+            </a>
+          </div>        
+        </div>
+        </ng-container>
+        
+      </div>
+    </div>
+  </section>
+  <!-- end arabWorld Section  -->
+  <section class="news videosSection">
+  <ng-container *ngIf="videos?.posts?.length">
+    <a [routerLink]="['/main/category',videos?._id,false,videos?.title]">
+      <h2 
+    class="title"> {{videos?.title}}</h2>
+    </a>
+    <swiper class="mb-4" [config]="swiperVideosConfig">
+      <ng-template 
+      *ngFor="let item of videos?.posts"
+      swiperSlide>
+      <div class="imagesSection parentOfLabel position-relative mb-2 ">
+        <a [routerLink]="['/main/details',item?._id]">
+          <img  
+          loading="lazy"
+          style="height: 225px;"
+          [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+          <p class="label">{{item?.main?.title | slice : 0 : 50}}</p>
+        </a>
+      </div>
+      </ng-template>
+    </swiper>
+  </ng-container>
+  
+    <div class="row">
+        <div 
+   *ngIf="states?.posts?.length"
+        class="col-md-3  col-sm-6 mb-4">
+        <a [routerLink]="['/main/category',states?._id,false,states?.title]" >
+          <h2 
+        class="title"> {{states?.title}}</h2>
+        </a>
+          <a  
+          [routerLink]="['/main/details',item?._id]"
+          *ngFor="let item of states?.posts | slice : 0 : 2">
+            <article>
+              <img 
+              loading="lazy"
+              [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+              <h3> {{item?.main?.title | slice : 0 : 100}}... </h3>
+            </article>
+          </a>
+        </div>
+      
+    
+      <div 
+      *ngIf="eco?.posts?.length"
+      class="col-md-3  col-sm-6 mb-4">
+      <a [routerLink]="['/main/category',eco?._id,false,eco?.title]" >
+        <h2 
+      class="title">{{eco?.title}}</h2>
+      </a>
+       <a 
+       *ngFor="let item of eco?.posts | slice : 0 : 2"
+      [routerLink]="['/main/details',item?._id]">
+        <article>
+          <img 
+          loading="lazy"
+          [src]="item?.main?.image?.image?.file?.src" class="w-100"
+           [alt]="item?.main?.title">
+          <h3> {{item?.main?.title | slice : 0 : 100}}... </h3>
+        </article>
+       </a>
+      </div>
+      <div 
+      *ngIf="invReports?.posts?.length"
+      class="col-md-3  col-sm-6 mb-4">
+      <a [routerLink]="['/main/category',invReports?._id,false,invReports?.title]" >
+        <h2
+      class="title">{{invReports?.title}}</h2>
+      </a>
+        <a 
+        *ngFor="let item of invReports?.posts | slice : 0 : 2"
+        [routerLink]="['/main/details',item?._id]"
+        >
+          <article>
+            <img 
+            loading="lazy"
+            [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+            <h3> {{item?.main?.title | slice : 0 : 100}}...</h3>
+          </article>
+        </a>
+      </div>
+      <div 
+      *ngIf="reads?.length"
+      class="col-sm-6  col-md-3 mb-4">
+        <h2 
+        style="cursor: auto;"
+        class="title"> الاكثر قراءة</h2>
+        <a 
+        *ngFor="let item of reads | slice : 0 : 2"
+        [routerLink]="['/main/details',item?._id]"
+        >
+          <article>
+            <img 
+            loading="lazy"
+            [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+            <h3> {{item?.main?.title | slice : 0 : 100}}...</h3>
+          </article>
+        </a>
+      </div>
+  
+  
+  
+    </div>
+  </section>
+  <!-- end videosSection -->
+  <div 
+  *ngIf="areafive?.length"
+  class="advertisment mb-4">
+  <ng-container *ngIf="areafive?.length==1">
+    <a   
+    aria-label="Eltimes EG ads"
+    [href]="areafive[0]?.link" target="_blank">
+      <img 
+      loading="lazy"
+      alt="Eltimes EG ads"
+      style="max-height:150px;width: 100%;object-fit: contain"
+      [src]="areafive[0]?.image?.file?.src" >
+   </a>
+  </ng-container>
+  <ng-container *ngIf="areafive.length>1">
+
+    <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+    [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+    [navigation]="false" class=" ">
+    <ng-template 
+    *ngFor="let item of areafive"
+    data-swiper-autoplay="6000" swiperSlide>
+      <a   
+      aria-label="Eltimes EG ads"
+      [href]="item?.link" target="_blank">
+         <img 
+         loading="lazy"
+         alt="Eltimes EG ads"
+         style="max-height:150px;width: 100%;object-fit: contain"
+         [src]="item?.image?.file?.src" >
+      </a>
+    </ng-template>
+</swiper>
+  </ng-container>
+   
+  </div>
+  <!-- end ads section -->
+  <section 
+  class="news  famousWorldSection">
+    <ng-container *ngIf="famous?.posts?.length">
+      <a [routerLink]="['/main/category',famous?._id,false,famous?.title]" >
+        <h2 
+      class="title">  {{famous?.title}} </h2>
+      </a>
+      <swiper  [config]="swiperVideosConfig" class="newsImages mb-4">
+        <ng-template 
+        *ngFor="let item of famous?.posts"
+        swiperSlide>
+            <a 
+            [routerLink]="['/main/details',item?._id]"
+            >
+              <div class="parentOfLabel position-relative">
+                <img 
+               loading="lazy"
+                [src]="item?.main?.image?.image?.file?.src" [alt]="item?.main?.title">
+                <p class="label">{{item?.main?.title| slice:0:100 }}...</p>
+              </div>
+            </a>
+        </ng-template>
+      </swiper>
+    </ng-container>
+  
+    <div class="row">
+      <div 
+      *ngIf="tv?.posts?.length"
+      class="col-sm-6  col-md-3 mb-4">
+      <a [routerLink]="['/main/category',tv?._id,false,tv?.title]" >
+        <h2 
+      class="title">{{tv?.title}} </h2>
+      </a>
+          <a 
+          *ngFor="let item of tv?.posts | slice:0:2"
+          [routerLink]="['/main/details',item?._id]" >
+            <article>
+              <img 
+              loading="lazy"
+              [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+              <h3> {{item?.main?.title|slice:0:100}}...</h3>
+            </article>
+          </a>
+      </div>
+      <div 
+      *ngIf="health?.posts?.length"
+      class="col-sm-6  col-md-3 mb-4">
+      <a [routerLink]="['/main/category',health?._id,false,health?.title]" >
+        <h2 
+      class="title"> {{health?.title}} </h2>
+      </a>
+          <a 
+          *ngFor="let item of health?.posts| slice:0:2"
+          [routerLink]="['/main/details',item?._id]"
+          >
+            <article>
+              <img 
+              loading="lazy"
+              [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+              <h3> {{item?.main?.title|slice:0:100}}...</h3>
+            </article>
+          </a>
+      </div>
+      <div 
+      *ngIf="women?.posts?.length"
+      class="col-sm-6   col-md-3 mb-4">
+      <a [routerLink]="['/main/woman',women?._id]" >
+        <h2 
+      class="title">  {{women?.title}}</h2>
+      </a>
+        <a 
+        *ngFor="let item of women?.posts| slice:0:2"
+        [routerLink]="['/main/details',item?._id]"
+        >
+          <article>
+            <img 
+            loading="lazy"
+            [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+            <h3> {{item?.main?.title|slice:0:100}}...</h3>
+          </article>
+        </a>
+      </div>
+      <div 
+      
+      class="col-sm-6 parentOfSurvey col-md-3 mb-4">
+      <ng-container *ngIf="albums?.posts?.length">
+        <a [routerLink]="['/main/category',albums?._id,false,albums?.title]" >
+          <h2 
+        class="title">  {{albums?.title}}</h2>
+        </a>
+        <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+        [autoplay]="{ delay: 3000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+        [navigation]="false" class=" ">
+        <ng-template 
+        *ngFor="let item of albums?.posts"
+        data-swiper-autoplay="6000" swiperSlide>
+        <a 
+        [routerLink]="['/main/details',item?._id]"
+        >
+          <article>
+            <img 
+            loading="lazy"
+            [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+            <h3> {{item?.main?.title|slice:0:100}}...</h3>
+          </article>
+        </a>
+     
+        </ng-template>
+    </swiper>
+      </ng-container>
+      <!-- end albums -->
+        <ng-container *ngIf="Question">
+          <h2 
+          style="cursor: auto;"
+          class="title"> استطلاع راي </h2>
+        <div 
+        style="max-height: 225px;overflow: auto;"
+        class="mb-2 p-1 survey">
+            <ng-container >
+              <div class="surveyTitle mb-2">
+                <small>{{Question?.title}}</small>
+              </div>
+              <div class="surveyBody">
+                <div 
+                *ngFor="let answer of Question?.answers;let opinoinIndex = index"
+                class="item">
+                  <input 
+                  (click)="chooseAnswer(Question?._id,answer?.title)"
+                  class="form-check-input" type="radio" [id]="'opinon'+opinoinIndex" >
+                  <label 
+                  [for]="'opinon'+opinoinIndex"
+                   class="form-check-label" >
+                        {{answer?.title}}
+                  </label>
+                </div>
+              </div>
+              <div class="my-2">
+                <button 
+                (click)="answer()"
+                class="btn btn-danger">
+                  تصويت    <i 
+                  *ngIf="opinonLoading"
+                  class="fas fa-circle-notch fa-spin"></i>
+                </button>
+                <button
+               (click)="getResultOfQuestion(Question?._id,result)"
+                class="btn btn-danger me-2">
+                  <span *ngIf="!resultLoading">النتائج</span>
+                  <i 
+                  *ngIf="resultLoading"
+                  class="fas fa-circle-notch fa-spin"></i>
+                </button>
+             
+              </div>
+            </ng-container>
+            
+        </div>
+        </ng-container>
+        
+        <!-- end questions -->
+    
+      </div>
+    </div>
+  </section>
+  <!-- end famousWorldSection -->
+  <div 
+  *ngIf="areasix?.length"
+  class="advertisment mb-4">
+  <ng-container *ngIf="areasix?.length==1">
+    <a   
+    aria-label="Eltimes EG ads"
+    [href]="areasix[0]?.link" target="_blank">
+      <img 
+    alt="eltimes eg ads"
+      loading="lazy"
+      style="max-height:150px;width: 100%;object-fit: contain"
+      [src]="areasix[0]?.image?.file?.src" >
+   </a>
+  </ng-container>
+  <ng-container *ngIf="areasix.length>1">
+
+    <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+    [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+    [navigation]="false" class=" ">
+    <ng-template 
+    *ngFor="let item of areasix"
+    data-swiper-autoplay="6000" swiperSlide>
+      <a   
+      aria-label="Eltimes EG ads"
+      [href]="item?.link" target="_blank">
+         <img 
+         alt="eltimes eg ads"
+         loading="lazy"
+         style="max-height:150px;width: 100%;object-fit: contain"
+         [src]="item?.image?.file?.src" >
+      </a>
+    </ng-template>
+</swiper>
+  </ng-container>
+   
+  </div>
+  <!-- end ads section -->
+  
+  
+  
+  <section class="news CarsSection">
+    <div class="row">
+      <div 
+      *ngIf="regligion?.posts?.length"
+      class="col-sm-6  col-md-3 mb-4">
+      <a [routerLink]="['/main/category',regligion?._id,false,regligion?.title]" >
+        <h2 
+      class="title">  {{regligion?.title}}</h2>
+      </a>
+       <a 
+       *ngFor="let item of regligion?.posts| slice:0:2"
+       [routerLink]="['/main/details',item?._id]"
+       >
+        <article>
+          <img 
+          loading="lazy"
+          [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+          <h3> {{item?.main?.title|slice:0:100}}...</h3>
+        </article>
+       </a>
+      </div>
+      <div 
+      *ngIf="education?.posts?.length"
+      class="col-sm-6  col-md-3 mb-4">
+      <a [routerLink]="['/main/category',education?._id,false,education?.title]" >
+        <h2 
+      class="title">{{education?.title}} </h2>
+      </a>
+        <a 
+        *ngFor="let item of education?.posts| slice:0:2"
+        [routerLink]="['/main/details',item?._id]"
+        >
+         <article>
+           <img 
+           loading="lazy"
+           [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+           <h3> {{item?.main?.title|slice:0:100}}...</h3>
+         </article>
+        </a>
+      </div>
+      <div 
+      *ngIf="tech?.posts?.length"
+      class="col-sm-6 col-md-3 mb-4">
+      <a [routerLink]="['/main/category',tech?._id,false,tech?.title]" >
+        <h2 
+      class="title">{{tech?.title}}</h2>
+      </a>
+        <a 
+        *ngFor="let item of tech?.posts| slice:0:2"
+        [routerLink]="['/main/details',item?._id]"
+        >
+         <article>
+           <img 
+           loading="lazy"
+           [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+           <h3> {{item?.main?.title|slice:0:100}}...</h3>
+         </article>
+        </a>
+      </div>
+      <div 
+      *ngIf="selected?.posts?.length>1"
+      class="col-sm-6  col-md-3 mb-4">
+      <a [routerLink]="['/main/category',selected?._id,false,selected?.title]" >
+        <h2 
+      class="title">{{selected?.title}}</h2>
+      </a>
+   
+        <a 
+        *ngFor="let item of selected?.posts|slice:1:3"
+        [routerLink]="['/main/details',item?._id]"
+        >
+         <article>
+           <img 
+           loading="lazy"
+           [src]="item?.main?.image?.image?.file?.src" class="w-100" [alt]="item?.main?.title">
+           <h3> {{item?.main?.title|slice:0:100}}...</h3>
+         </article>
+        </a>
+      </div>
+  
+    </div>
+  </section>
+  <!-- end CarsSection -->
+  <div 
+  *ngIf="areaseven?.length"
+  class="advertisment mb-4">
+  <ng-container *ngIf="areaseven?.length==1">
+    <a   
+    aria-label="Eltimes EG ads"
+    [href]="areaseven[0]?.link" target="_blank">
+      <img 
+      loading="lazy"
+      alt="Eltimes EG ads"
+      style="max-height:150px;width: 100%;object-fit: contain"
+      [src]="areaseven[0]?.image?.file?.src" >
+   </a>
+  </ng-container>
+  <ng-container *ngIf="areaseven.length>1">
+
+    <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+    [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+    [navigation]="false" class=" ">
+    <ng-template 
+    *ngFor="let item of areaseven"
+    data-swiper-autoplay="6000" swiperSlide>
+      <a   
+      aria-label="Eltimes EG ads"
+      [href]="item?.link" target="_blank">
+         <img 
+         loading="lazy"
+         alt="Eltimes EG ads"
+         style="max-height:150px;width: 100%;object-fit: contain"
+         [src]="item?.image?.file?.src" >
+      </a>
+    </ng-template>
+</swiper>
+  </ng-container>
+   
+  </div>
+  <!-- end ads section -->
+  <ng-template #result>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">النتائج</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul>
+        <li *ngFor="let item of questionsResult">
+          {{item?.title+ ': ' +item?.count}}
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+  </ng-template>
+  

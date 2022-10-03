@@ -1,0 +1,72 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section class="categories">
+        <h4 class="mb-5">الاعلانات</h4>
+        <div class="d-sm-flex mb-5">
+          <button 
+          class="btn btn-secondary ms-2">
+            <a class="text-white" 
+            routerLink="/dashboard-page/main/add-advertisment">
+                اضافة اعلان
+                <i class="fas fa-plus"></i>
+            </a>
+        </button>
+
+        </div>
+        <ng-container *ngIf="ads?.length;else noAds">
+            <div class="row">
+                <div 
+                *ngFor="let item of ads"
+                class="col-md-4 mb-4">
+                    <div> 
+                        <div class="mb-2">
+                            <i 
+                            style="cursor: pointer;"
+                            routerLink="/dashboard-page/main/add-advertisment"
+                            [queryParams]="{id:item?._id}"
+                            class="far ms-2 fa-edit"></i>
+                            <i     
+                            (click)="openModal(deleteAd)"                      
+                            style="cursor: pointer;"
+                            class="far fa-trash-alt"></i>
+                        </div>
+                        <img 
+                        style="width:200px;height:200px;object-fit:cover"
+                        [src]="item?.image?.file?.src" alt="">
+                    </div>
+                    <ng-template #deleteAd>
+                        <div class="modal-header">
+                          <h5 class="modal-title pull-left"> تأكيد حذف الاعلان </h5>
+                          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                            <span aria-hidden="true" class="visually-hidden">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <button 
+                          (click)="modalRef?.hide()"
+                          class="btn btn-light">الغاء</button>
+                          <button 
+                          [disabled]="deleteAdLoading"
+                          (click)="deleteAD(item?._id)"
+                          class="btn btn-secondary mx-3">
+                          تأكيد   <i 
+                          *ngIf="deleteAdLoading"
+                          class="fas fa-circle-notch fa-spin"></i>
+                        </button>
+                        </div>
+                      </ng-template>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noAds>
+            <p class="my-5">لا توجد أعلانات</p>
+        </ng-template>
+        
+
+    </section>
+</ng-template>
+ 

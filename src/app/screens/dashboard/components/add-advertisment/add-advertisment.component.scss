@@ -1,0 +1,13 @@
+.chkBox {
+ width: 15px;
+ height: 15px;
+ border: 1px solid gray;
+ border-radius: 3px;
+ background: white; 
+}
+::ng-deep {
+
+    .modal-header .btn-close {
+        margin: -0.5rem auto -0.5rem -0.5rem !important;
+    }
+}

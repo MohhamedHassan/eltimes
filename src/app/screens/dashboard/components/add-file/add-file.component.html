@@ -1,0 +1,23 @@
+<section class="add-category">
+    <h4 class="mb-5">أضافة صورة او فيديو</h4>
+    <form 
+    [formGroup]="addFileForm"
+    (ngSubmit)="addFile(addFileForm.value)"
+    >
+        <label for="">اضافة صورة او فيديو</label>
+        <input 
+        (change)="selectImage($event)"
+     
+        class="form-control mb-3" type="file" formControlName="image" >
+        <label for="">عنوان الصورة او فيديو</label>
+        <input 
+      
+        class="form-control mb-3" type="text" formControlName="title" >
+        <button
+        [disabled]="addFileForm.invalid"
+        class="btn btn-secondary w-100">
+            تم
+            <i *ngIf="loading" class="fas fa-circle-notch fa-spin"></i>
+        </button>
+    </form>
+</section>

@@ -1,0 +1,111 @@
+<section class="container-fluid">
+    <div class="row">
+      <div class="d-none d-xl-block col-xl-2 ">
+        <div class="sticky-top mainAd">
+          <ng-container *ngIf="adsService.rightAds?.length==1">
+            <a   [href]="adsService.rightAds[0]?.link" target="_blank">
+              <img 
+              class="w-100" style="height: 100vh;cursor: pointer;"
+              [src]="adsService.rightAds[0]?.image?.file?.src" >
+           </a>
+          </ng-container>
+          <ng-container *ngIf="adsService.rightAds?.length>1">
+     
+            <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+            [autoplay]="{ delay: 3000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+            [navigation]="false" class=" ">
+            <ng-template 
+            *ngFor="let item of adsService.rightAds"
+            data-swiper-autoplay="6000" swiperSlide>
+              <a   [href]="item?.link" target="_blank">
+                 <img 
+                 class="w-100" style="height: 100vh;cursor: pointer;"
+                 [src]="item?.image?.file?.src" >
+              </a>
+            </ng-template>
+        </swiper>
+          </ng-container>
+     
+        </div>
+      </div>
+      <!-- end the main right advertisment  -->
+      <div class="col-12 col-xl-8 ">
+  
+        <div style="overflow-x: hidden"
+        class="mainContainer" 
+        [ngStyle]="{
+          overflowY:smallNavbarService.showSmallNavBAr ? 'hidden' : 'auto',
+          height:smallNavbarService.showSmallNavBAr ? '70vh' : 'auto'
+        }">
+        <app-header></app-header>
+        <!-- end header  -->
+        <div class="my-2 d-flex align-items-center justify-content-center">
+         
+          <input
+          id="mainSearch" 
+          style="box-shadow: none;"
+          #inputSearch
+          (keyup.enter)="routeToSearch(inputSearch)"
+          type="search" class="form-control  w-75">
+          <label for="mainSearch" >
+            <button 
+            type="button"
+            (click)="routeToSearch(inputSearch)"
+            class="btn btn-danger mx-2 ">بحث</button>
+          </label>
+<!--  
+          <a
+          aria-label="Eltimes EG rss"
+          routerLink="/main/rss"
+          ><i style="background-color: #FF9A00;color:white;padding:7px;border-radius: 50%;" class="fas fa-rss"></i></a> -->
+        </div>
+        <!-- end search -->
+    
+          <router-outlet></router-outlet>
+          <!-- end main Content -->
+          <app-footer></app-footer>
+          <!-- end footer -->
+        </div>
+  
+  
+      </div>
+      <!-- end main content -->
+      <div class="d-none d-xl-block col-xl-2 ">
+        <div class="sticky-top mainAd">
+          <ng-container *ngIf="adsService.leftAds?.length==1">
+            <a   [href]="adsService.leftAds[0]?.link" target="_blank">
+              <img 
+              class="w-100" style="height: 100vh;cursor: pointer;"
+              [src]="adsService.leftAds[0]?.image?.file?.src" >
+           </a>
+          </ng-container>
+          <ng-container *ngIf="adsService.leftAds?.length>1">
+     
+            <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+            [autoplay]="{ delay: 3000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+            [navigation]="false" class=" ">
+            <ng-template 
+            *ngFor="let item of adsService.leftAds"
+            data-swiper-autoplay="6000" swiperSlide>
+              <a   [href]="item?.link" target="_blank">
+                 <img 
+                 class="w-100" style="height: 100vh;cursor: pointer;"
+                 [src]="item?.image?.file?.src" >
+              </a>
+            </ng-template>
+        </swiper>
+          </ng-container>
+        </div>
+      </div>
+      <!-- end the main left advertisment  -->
+    </div>
+  </section>
+  <div 
+  *ngIf="!smallNavbarService.showSmallNavBAr&&showupbutton"
+  class="upButton" (click)="upButton()">
+    <i class="fas fa-chevron-up"></i>
+  </div>
+  
+  
+  
+  

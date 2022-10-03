@@ -1,0 +1,274 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section>
+        <div class="articleDetails">
+          <div class="articleTitle  mb-5">
+            <div class="control mb-3">
+              <div
+              class="mb-3"
+              *ngIf="authService.userProfile?.role?.type=='admin' 
+              || authService.userProfile?.role?.type=='supervisor'"
+              >
+              <button 
+              *ngIf="!categoryDetails?.status"
+              (click)="openModal(acceptArticle)"
+              class="btn btn-primary">قبول المقالة</button>
+              <p 
+              *ngIf="categoryDetails?.status"
+              class="text-primary fw-bold">تم قبول هذه المقالة</p>
+              </div>
+             <div 
+             *ngIf="authService.userProfile?.role?.type=='admin' 
+             || authService.userProfile?.role?.type=='supervisor'"
+             class="my-4">
+              <a style="cursor: pointer;color: blue;"  (click)="scroll(section)">
+                تعليقات هذه المقالة
+            </a>
+             </div>
+             <p>عدد الزيارات : {{categoryDetails?.views}}</p>
+            </div>
+            <div class="mb-2 icons">
+            
+              <i 
+              routerLink="/dashboard-page/main/add-article"
+              [queryParams]="{id:categoryDetails?._id}"
+              class="far ms-2 fa-edit"></i>
+              <i 
+              (click)="openModal(deleteArticle)"
+              class="far fa-trash-alt"></i>
+            </div>
+            <h1 class="fw-bold">
+              {{categoryDetails?.main?.title}}  
+            </h1>
+           
+            <small class="text-secondary fw-bold">  {{categoryDetails?.updatedAt | date : 'fullDate' : undefined : 'ar'}}</small>
+          </div>
+          <div class="text-center articleImagee mb-3">
+            <img [src]="categoryDetails?.main?.image?.imageBigSize?.file?.src" class="img-fluid"
+             style="max-height: 500px;object-fit: cover;" alt="">
+             <p 
+             [innerHtml]="categoryDetails?.main?.image?.title"
+             class="m-0 text-center"></p>
+          </div>
+          <div class="content mb-3">
+            <div 
+            class="mb-3">
+              <p class="text-danger  fw-bold"> كتب {{categoryDetails?.writer?.name}} </p>
+  
+            </div>
+          
+
+            <div class="showContent">
+              <div class="mb-4" *ngFor="let item of categoryDetails?.content;let i = index">
+               
+                <h2 
+                style="font-size: large;
+                font-weight: 700;
+                border-bottom: 1px solid #dcdcdc;
+                padding-bottom: 5px;
+                color: #de2323;"
+                *ngIf="item?.title"
+                [innerHtml]="item?.title"
+                ></h2>
+                <!-- end paragraph title -->
+                <p 
+                style="text-align: justify;font-size: 18px;
+                line-height: 1.9;"
+                [innerHtml]="item?.desc"
+                class="m-0 content" 
+                *ngIf="item?.desc"></p>
+                          <!-- end paragraph text -->
+                <ul 
+                class="list-unstyled p-0 m-0"
+                *ngIf="item?.ul?.length">
+                    <li 
+                    style="margin-bottom: 10px;"
+                    *ngFor="let li of item?.ul"
+                   
+                    >
+                    <svg 
+                    style="margin-top: 5px;"
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                      </svg>
+                    <span  
+                    style="font-size: 18px;"
+                    [innerHtml]="li"></span>
+                </li>
+                </ul>
+               <!-- end paragraph ul -->
+                <youtube-player 
+                *ngIf="item?.youtubeLink"
+                [videoId]="item?.youtubeLink" 
+                suggestedQuality="highres" 
+                [height]="250" 
+                [width]="500" 
+                [startSeconds]="0">
+              </youtube-player>
+        <!-- end paragraph youtube -->
+              <fb-video 
+              *ngIf="item?.facebookVideoLink"
+              [attr.href]="item?.facebookVideoLink"></fb-video>
+        <!-- end paragraph facebook video -->
+              <fb-post 
+              *ngIf="item?.facebookImageLink"
+              [attr.href]="item?.facebookImageLink"></fb-post>
+               <!-- end paragraph facebook post -->
+              <div 
+              [innerHtml]="item?.twitterOrInstagramHtml"
+              *ngIf="item?.twitterOrInstagramHtml">
+
+              </div>
+             <!-- end paragraph twitter & instagram -->
+              <div style="overflow: auto;">
+                <table 
+                style="border-color:black"
+                *ngIf="item?.table?.length"
+                class="table table-bordered">
+                <tbody>
+                  <tr *ngFor="let row of item?.table">
+                    <td
+                    [innerHtml]="item?.column"
+                    *ngFor="let item of row"
+                    ></td>
+                  </tr>
+                </tbody>
+                </table>
+              </div>
+              <!-- end paragraph table -->
+              <div 
+              class="text-center"
+              *ngIf="item?.image?.image?.file?.src">
+                <img 
+                class="img-fluid"
+                style="max-height: 400px;object-fit: cover;"
+                [src]="item?.image?.image?.file?.src" alt="">
+                <p 
+                [innerHtml]="item?.image?.title"
+                *ngIf="item?.image?.title"
+                class="m-0 text-center"></p>
+           
+              </div>
+               <!-- end paragraph image  -->
+              <div 
+              *ngIf="item?.videoFromHisDevice?.file?.src"
+              class="text-center">
+              <video style="width: 100%;" height="240" controls>
+                <source [src]="item?.videoFromHisDevice?.file?.src" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              </div>
+               <!-- end paragraph video from his device -->
+              <div *ngIf="item?.album?.length">
+                <div class="row">
+                    <div 
+                    *ngFor="let albumImage of item?.album"
+                    class="col-md-6 mb-4">
+                        <div>
+                            <img 
+                            style="object-fit: cover;height: 300px;width: 100%;"
+                            [src]="albumImage?.file?.src" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!-- end paragraph album -->
+              </div>
+           </div>
+   
+           
+          </div>
+          <!-- end content -->
+          <ul 
+          *ngIf="categoryDetails?.keywords?.length"
+          class="list-unstyled p-0 mb-3 keyWords d-flex flex-wrap">
+            <i class="text-danger m-2 py-2 fas fa-search"></i>
+             <li
+             *ngFor="let key of categoryDetails?.keywords"
+             ><a 
+             [routerLink]="['/main/search',key]"
+             class="text-white px-3 py-1  bg-secondary">{{key}}</a></li>
+          </ul>
+          <!-- end key words -->
+          <div   #section>
+
+        
+          <ng-container       
+          *ngIf="authService.userProfile?.role?.type=='admin' || authService.userProfile?.role?.type=='supervisor'">
+            <h5 class="mb-4">التعليقات  :</h5>
+            <ng-container *ngIf="comments?.length;else noComments">      
+                <ul class="p-0">
+                    <li *ngFor="let item of comments" class="mb-4">
+                      <i 
+                      style="cursor: pointer;"
+                      (click)="deleteComment(item?._id)"
+                      class="far fa-trash-alt"></i>
+                      <p style="word-break: break-all;margin: 0;">الاسم : {{item?.name}}</p>
+                      <p style="word-break: break-all;margin: 0;">التعليق : {{item?.comment}}</p>
+  
+                    </li>
+                </ul>
+            </ng-container>
+            <ng-template #noComments>
+               <p>لا يوجد تعليقات</p>
+            </ng-template>
+          </ng-container>
+        </div>
+     
+          
+          
+          <!-- end comments -->
+         </div>
+  </section>
+</ng-template>
+<ng-template #acceptArticle>
+    <div class="modal-header">
+      <h5 class="modal-title pull-left"> تأكيد قبول المقالة </h5>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <button 
+      (click)="modalRef?.hide()"
+      class="btn btn-light">الغاء</button>
+      <button 
+      [disabled]="deleteOrAcceptArticleLoading"
+      (click)="acceptArticlee()"
+      class="btn btn-secondary mx-3">
+      تأكيد   <i 
+      *ngIf="deleteOrAcceptArticleLoading"
+      class="fas fa-circle-notch fa-spin"></i>
+    </button>
+    </div>
+  </ng-template>
+<!-- ---------- end acepte article popup --------------- -->
+<ng-template #deleteArticle>
+    <div class="modal-header">
+      <h5 class="modal-title pull-left"> تأكيد حذف المقالة </h5>
+      <button type="button" 
+      class="btn-close close pull-right" 
+      aria-label="Close" 
+      (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <button 
+      (click)="modalRef?.hide()"
+      class="btn btn-light">الغاء</button>
+      <button 
+      [disabled]="deleteOrAcceptArticleLoading"
+      (click)="deleteArtice()"
+      class="btn btn-secondary mx-3">
+      تأكيد   <i 
+      *ngIf="deleteOrAcceptArticleLoading"
+      class="fas fa-circle-notch fa-spin"></i>
+    </button>
+    </div>
+  </ng-template>
+<!-- ---------- end acepte article popup --------------- -->

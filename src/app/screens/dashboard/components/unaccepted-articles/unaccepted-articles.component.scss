@@ -1,0 +1,9 @@
+.accept-article {
+    tr {
+        &:hover {
+            background-color: #dfdfdf;
+            cursor: pointer;
+        }
+    }
+}
+table {min-width: 700px;}

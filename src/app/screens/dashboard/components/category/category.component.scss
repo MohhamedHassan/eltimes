@@ -1,0 +1,17 @@
+.categories {
+    a,i {
+       
+        cursor: pointer;
+        display: inline-block;
+        &:hover {
+            color:#FF4C3B !important
+        }
+    }
+    a { min-width: 100px;}
+    i:not(.fa-plus){margin-left: 10px}
+}
+::ng-deep {
+    .modal-header .btn-close {
+        margin: -0.5rem auto -0.5rem -0.5rem !important;
+    }
+}

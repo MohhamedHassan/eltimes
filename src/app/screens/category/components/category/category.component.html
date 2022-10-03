@@ -1,0 +1,111 @@
+<section *ngIf="pageTitle">
+    <ul class="breadCrumbb d-flex mb-5 p-2 list-unstyled">
+         <li>
+             <a
+             routerLink="/main/home"
+             >
+                 الرئيسية
+             </a>
+         </li>
+         <li>
+             /
+         </li>
+         <li>
+             <span>
+                  {{pageTitle}}
+             </span>
+         </li>
+    </ul>
+    <div class="pageTitle mb-5">
+        <div class="title">{{pageTitle}}</div>
+    </div>
+ </section>
+ <!-- end breadCrumb and Title -->
+ <div 
+ *ngIf="ads?.length"
+ class="advertisment mb-4">
+ <ng-container *ngIf="ads?.length==1">
+   <a   [href]="ads[0]?.link" target="_blank">
+     <img 
+     style="max-height:150px;width: 100%;object-fit: contain"
+     [src]="ads[0]?.image?.file?.src" >
+  </a>
+ </ng-container>
+ <ng-container *ngIf="ads.length>1">
+
+   <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+   [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+   [navigation]="false" class=" ">
+   <ng-template 
+   *ngFor="let item of ads"
+   data-swiper-autoplay="6000" swiperSlide>
+     <a   [href]="item?.link" target="_blank">
+        <img 
+        style="max-height:150px;width: 100%;object-fit: contain"
+        [src]="item?.image?.file?.src" >
+     </a>
+   </ng-template>
+</swiper>
+ </ng-container>
+  
+  
+ </div>
+  <!-- end ads section -->
+  <section class="news" style="min-height: 100vh;">
+    <div class="row">
+        <ng-container *ngIf="articlesLoading;else articles"> 
+            <div 
+            *ngFor="let item of navBarService.loadingCount"
+            class="col-sm-6  col-md-4 mb-4">
+                <ngx-skeleton-loader count="1" appearance="circle" [theme]="{
+                    width: '100%',
+                    height: '150px',
+                    'border-radius': '10px',
+                    margin:0
+                }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader count="2"  [theme]="{
+                    width: '100%',
+                    height: '5px',
+                    'margin-bottom':'2px',
+                    'border-radius': '10px'
+                }"></ngx-skeleton-loader>
+            </div>
+        </ng-container>
+        <ng-template #articles>
+            <ng-container *ngIf="articless?.length;else notFound">
+                <div 
+                *ngFor="let article of articless"
+                class="col-sm-6  col-md-4 mb-4">
+                <a [routerLink]="['/main/details',article?._id]">
+                    <article>
+                        <img [src]="article?.main?.image?.image?.file?.src" class="w-100" alt="">
+                        <h3>{{article?.main?.title}}</h3>
+                    </article>
+                </a>
+                </div>
+            </ng-container>
+            <ng-template #notFound>
+                <h3 class="text-center">لا توجد نتائج</h3>
+            </ng-template>
+            
+  
+        </ng-template>
+        
+     
+    </div>
+</section>
+<div 
+style="overflow:auto"
+class="container">
+    <div 
+*ngIf="totalPages>10"
+
+class="d-flex justify-content-center px-3">
+   <pagination
+   previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+   (pageChanged)="pageChanged($event)"
+   [totalItems]="totalPages"
+    [maxSize]="5"></pagination>
+</div>
+</div>
+<!-- end pagination -->

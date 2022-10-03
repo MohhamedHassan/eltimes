@@ -1,0 +1,127 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section class="categories">
+        <h4 class="mb-5">الاقسام</h4>
+        <div class="d-sm-flex mb-2">
+          <button 
+          *ngIf="authService.userProfile?.role?.type=='admin'||
+          authService.userProfile?.role?.type=='supervisor'"
+          class="btn btn-secondary ms-2">
+            <a class="text-white" 
+            routerLink="/dashboard-page/main/add-category">
+                اضافة قسم
+                <i class="fas fa-plus"></i>
+            </a>
+        </button>
+        <div>
+          <input [(ngModel)]="searchValue" type="بحث" placeholder="search" class="form-control my-2 my-sm-0">
+        </div>
+        </div>
+        <ng-container *ngIf="categories?.length;else noCAtegories">
+            <accordion [isAnimated]="true">
+                <accordion-group class="mb-2" *ngFor="let category of categories | searchCategory : searchValue" [heading]="category?.title">
+                    <ng-template #deleteCategoryModal>
+                        <div class="modal-header">
+                          <h5 class="modal-title pull-left"> حذف القسم وما يحتويه من اقسام فرعية ومقالات ؟  </h5>
+                          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                            <span aria-hidden="true" class="visually-hidden">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <button 
+                          (click)="modalRef?.hide()"
+                          class="btn btn-light">الغاء</button>
+                          <button 
+                          [disabled]="deleteLoading"
+                          (click)="deleteCategory(category?._id)"
+                          class="btn btn-secondary mx-3">
+                          تأكيد   <i 
+                          *ngIf="deleteLoading"
+                          class="fas fa-circle-notch fa-spin"></i>
+                        </button>
+                        </div>
+                      </ng-template>
+                <!-- ---------- end delete category popup --------------- -->
+                    <p>
+                        القسم : 
+                        <a [routerLink]="['/dashboard-page/main/articles',category?._id,false,category?.title]" class="d-inline-block ms-2">{{category?.title}}</a>
+                        <ng-container 
+                        *ngIf="authService.userProfile?.role?.type=='admin'||
+                        authService.userProfile?.role?.type=='supervisor'"
+                        >
+                          <i 
+                          routerLink="/dashboard-page/main/add-category"
+                          [queryParams]="{id:category?._id}"
+                          class="far fa-edit"></i>
+                          <i 
+                          (click)="openModal(deleteCategoryModal)"
+                          class="far fa-trash-alt"></i>
+                        </ng-container>
+                        
+                    </p>
+                    <ng-container *ngIf="category?.subcategories?.length;else noSubs">
+                        <p>الاقسام الفرعية : </p>
+                        <ul class="subCategories list-unstyled p-2 bg-light  rounded">
+                            <li 
+                            class="mb-3"
+                            *ngFor="let sub of category?.subcategories">
+                                <a 
+                                class="d-inline-block ms-3"
+                                [routerLink]="['/dashboard-page/main/articles/',sub?._id,true,sub?.title]">{{sub?.title}}</a>
+                                <ng-container
+                                *ngIf="authService.userProfile?.role?.type=='admin'||
+                                authService.userProfile?.role?.type=='supervisor'"
+                                >
+                                <i 
+                                routerLink="/dashboard-page/main/add-sub"
+                                [queryParams]="{id:sub?._id}"
+                                class="far fa-edit"></i>
+                                <i 
+                                (click)="openModal(deleteSub)"
+                                class="far fa-trash-alt"></i>
+                                </ng-container>
+                                
+                       
+                                <ng-template #deleteSub>
+                                    <div class="modal-header">
+                                      <h5 class="modal-title pull-left">مسح القسم الفرعي وما يحتويه من مقالات ؟ </h5>
+                                      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                                        <span aria-hidden="true" class="visually-hidden">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <button 
+                                      (click)="modalRef?.hide()"
+                                      class="btn btn-light">الغاء</button>
+                                      <button 
+                                      [disabled]="deleteLoading"
+                                      (click)="deleteSubCAt(sub?._id)"
+                                      class="btn btn-secondary mx-3">
+                                      تأكيد   <i 
+                                      *ngIf="deleteLoading"
+                                      class="fas fa-circle-notch fa-spin"></i>
+                                    </button>
+                                    </div>
+                                  </ng-template>
+                                  <!-- end delete sub category popup -->
+                            </li>
+                        </ul>
+                    </ng-container>
+                    <ng-template #noSubs>
+                        <p>لا توجد أقسام فرعية</p>
+                    </ng-template>
+
+                </accordion-group>
+            </accordion>
+        </ng-container>
+        <ng-template #noCAtegories>
+            <p class="my-5">لا توجد أقسام</p>
+        </ng-template>
+
+    </section>
+</ng-template>
+ 

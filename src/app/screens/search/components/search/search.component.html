@@ -1,0 +1,32 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section class="news search py-2" style="min-height: 100vh;">
+        <ng-container *ngIf="searchResult?.length;else notFound">
+         
+           <div class="row">
+            <div 
+            *ngFor="let article of searchResult"
+            class="col-sm-6  col-md-4 mb-4">
+            <a [routerLink]="['/main/details',article?._id]">
+                <article>
+                    <img [src]="article?.main?.image?.image?.file?.src" class="w-100" alt="">
+                    <h3>{{article?.main?.title}}...</h3>
+                </article>
+            </a>
+            </div>
+           </div>
+        </ng-container>
+        <ng-template #notFound>
+            <p class="my-5 fw-bold text-center">
+                لا توجد نتائج
+            </p>
+        </ng-template>
+        
+        
+        
+    </section>
+</ng-template>

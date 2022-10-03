@@ -1,0 +1,22 @@
+.swiperTitle {
+    background-color: #F0F0F0;
+    p {
+        color:black !important
+    }
+    h2 {
+        color:#cc3e3e !important
+    }
+  
+}
+.artSwiper {
+    img {
+        height: 400px;
+        object-fit: fill;
+        margin-bottom: 30px;
+    }
+}
+::ng-deep {
+    .swiper-button-prev, .swiper-button-next {
+        color:#E03030 !important
+    }
+}

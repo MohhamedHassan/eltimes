@@ -1,0 +1,786 @@
+<p 
+
+*ngIf="getArticleByIdLoading"
+class="text-center p-5" style="font-weight: bold;direction: ltr;">
+    LOADING...........
+</p>
+<section 
+*ngIf="!getArticleByIdLoading"
+class="add-category container-fluid">
+    <h4 class="mb-5">{{articleId ? 'تعديل المقالة' : 'اضافة  مقالة'}}</h4>
+    <h6>فقرات المقالة:</h6>
+        <div 
+        #toolsElement class="row article-content mb-5">
+       
+            <div class="col-12 mb-3">
+                <p 
+                style="text-align: left;direction: ltr;"
+                class="text-white my-2 bg-secondary p-2">{{linkExample}}</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div>
+                    <ul class="list-unstyled  p-0">
+                        <li 
+                        style="cursor: pointer;"
+                        (click)="currentContetnt=item?.status;updateListItem=-1;updateMainContentItemIndex=-1;
+                        getImagesOnChange(item?.status);"
+                        [style.color]="currentContetnt==item?.status?'#FF4C3B':'black'"
+                        *ngFor="let item of tooles">
+                            <i [class]="item?.icon"></i>
+                            {{item?.title}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- end ul content tools -->
+           
+            <!-- end link example -->
+            <div class="col-md-8 mb-5">
+                <div>
+                   
+                        <ng-container *ngIf="currentContetnt=='text'">
+                            <label for="">عنوان الفقرة (أختياري)</label>
+                            <input 
+                            #articleTitleInput
+                            type="text" placeholder="عنوان الفقرة" class="form-control mb-3">
+                        <label for="">محتوي الفقرة</label>
+                     
+                            <textarea 
+                            #articleContentInput
+                            class="form-control mb-3" name="" placeholder="محتوي الفقرة" id="" cols="30" rows="10"></textarea>
+                            <button 
+                            (click)="pragraphContent(articleTitleInput,articleContentInput)"
+                            class="btn btn-secondary">
+                                {{updateMainContentItemIndex==-1  ? 'اضافة' : 'تعديل'}}
+                            </button>
+                        </ng-container>
+                        <!-- end content text -->
+                        <ng-container *ngIf="currentContetnt=='ul'">
+                            <label for="">عنوان الفقرة (أختياري)</label>
+                            <input 
+                            #articleTitleInputForList
+                            type="text" placeholder="عنوان الفقرة" class="form-control mb-3">
+                            <label for="">  القائمة</label>
+                            <input 
+                            #articleListInput
+                            (keyup.enter)="pragraphList(articleListInput)"
+                            type="text" placeholder="القائمة" class="form-control mb-3">
+                            
+                            <button 
+                          
+                            (click)="pragraphList(articleListInput)"
+                            
+                            class="btn btn-secondary mb-2">
+                                أضف الي القائمة
+                            </button>
+                            <ul class="mb-3 p-0 list-unstyled">
+                                <li *ngFor="let item of articleList;let i = index">
+                                    <i style="cursor: pointer;" 
+                                    (click)="deleteListItem(i)"
+                                    class="fas fa-trash"></i>
+                                    <span class="mx-2 d-inline-block"></span>
+                                    <i 
+                                    (click)="editListItem(i,articleListInput)"
+                                    style="cursor: pointer;" class="fas fa-edit"></i>
+                                    <span class="mx-2 d-inline-block"></span>
+                                    <span [innerHtml]="item"></span>
+                                   
+                                </li>
+                            </ul>
+                            <button 
+                        (click)="addlistToContent(articleTitleInputForList)" 
+                            class="btn btn-secondary">
+                                تم
+                            </button>
+                        </ng-container>
+                        <!-- end content list -->
+                        <ng-container *ngIf="currentContetnt=='youtube'">
+                            <label for="">فيديو من يوتيوب</label>
+                            <input 
+                            #youtubeInput
+                            type="text" placeholder="فيديو من يوتيوب" class="form-control mb-3">
+                            <button 
+                            (click)="addYoutubeVideo(youtubeInput)"
+                            class="btn btn-secondary">
+                                {{updateMainContentItemIndex==-1  ? 'اضافة' : 'تعديل'}}
+                            </button>
+                        </ng-container>
+                        
+                        <!-- end content youtube -->
+                        <ng-container *ngIf="currentContetnt=='fbvideo'">
+                            <label for="">فيديو من فيسسبوك</label>
+                            <input 
+                            #fbVideoInput
+                            type="text" placeholder="فيديو من فيسبوك" class="form-control mb-3">
+                            <button 
+                            (click)="addFacebookVideo(fbVideoInput)"
+                            class="btn btn-secondary">
+                                {{updateMainContentItemIndex==-1  ? 'اضافة' : 'تعديل'}}
+                            </button>
+                        </ng-container>
+                        <!-- end content facebook video -->
+                        <ng-container *ngIf="currentContetnt=='fbimage'">
+                            <label for=""> نص او صورة من فيسسبوك </label>
+                            <input 
+                            #fbImageInput
+                            type="text" placeholder="نص او صورة من فيسبوك" class="form-control mb-3">
+                            <button 
+                            (click)="addFacebookImage(fbImageInput)"
+                            class="btn btn-secondary">
+                                {{updateMainContentItemIndex==-1  ? 'اضافة' : 'تعديل'}}
+                            </button>
+                        </ng-container>
+                        <!-- end content facebook image -->
+                        <ng-container *ngIf="currentContetnt=='twitter'">
+                            <label for="">محتوي من تويتر او انستجرام</label>
+                            <input 
+                            #twitterInput
+                            type="text" placeholder="محتوي من تويتر او انستجرام" class="form-control mb-3">
+                            <button 
+                            (click)="addtwitter(twitterInput)"
+                            class="btn btn-secondary">
+                                {{updateMainContentItemIndex==-1  ? 'اضافة' : 'تعديل'}}
+                            </button>
+                        </ng-container>
+                        <!-- end content facebook image -->
+                        <ng-container *ngIf="currentContetnt=='table'">
+                         <form 
+                         (ngSubmit)="submitTable(tableForm.value)"
+                         [formGroup]="tableForm">
+                            <div 
+                            *ngIf=" getRows().controls?.length"
+                            formArrayName="rows">
+                                <div 
+                                class="mb-3"
+                                style="border: 1px solid rgb(216, 214, 214);border-radius: 10px;position: relative;padding: 20px;"
+                                *ngFor="let item of getRows().controls;let rowsIndex = index">
+                                <i  
+                                (click)="deleteRow(rowsIndex)"
+                                style="cursor: pointer"
+                                class="fas fa-times bg-secondary text-white p-2 rounded"></i>
+                                    <span class="mx-2"></span>
+                                  
+                                    <span >
+                                        الصف رقم {{rowsIndex+1}}
+                                    </span>
+                                    <div [formGroupName]="rowsIndex" >
+                                        <div formArrayName="row" class="">
+                                            <div *ngFor="let col of getColumns(rowsIndex).controls;let colIndex = index">
+                                                <div 
+                                                class="d-flex align-items-center my-3"
+                                                [formGroupName]="colIndex">
+                                                    <i 
+                                                    (click)="deleteColumn(rowsIndex,colIndex)"
+                                                    style="cursor: pointer;"
+                                                    class="fas fa-times"></i>
+                                                    <span class="mx-2 d-inline-block"></span>
+                                                    <input 
+                                                    formControlName="column"
+                                                    type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <button 
+                                            type="button"
+                                            (click)="addColumn(rowsIndex)"
+                                            class="btn btn-secondary mt-2">اضافة عمود</button>
+                                        </div>
+                                    </div>
+                                 
+                                </div>
+                                <button 
+                                type="button"
+                                (click)="addRow()"
+                                class="btn btn-secondary">أضافة صف</button>
+                            </div>
+                            <button 
+                            [disabled]="tableForm.invalid"
+                            class="btn btn-secondary mt-3 w-100">
+                                تم
+                            </button>
+                         </form>
+                        </ng-container>
+                    <!-- end content table -->
+                    <ng-container *ngIf="currentContetnt=='image'">
+    
+                        <div style="height: 400px;overflow: auto;">
+                            <label for=""> عنوان الصورة (اختياري)</label>
+                            <input 
+                            #imageTitleInput
+                            type="text" placeholder="عنوان الصورة" class="form-control mb-3">
+                            <input 
+                            (keyup)="getPageOneOnBlur(inputSearchForImage.value)"
+                            (keyup.enter)="searchImages(inputSearchForImage)"
+                            #inputSearchForImage
+                            type="text" placeholder="ابحث عن صورة" class="form-control mb-3">
+                            <div 
+                            *ngIf="!imagesLoading"
+                            class="row">
+                                <div 
+                                *ngFor="let item of allImages"
+                                class="col-md-4 mb-2">
+                                    <div class="text-center">
+                                        <img 
+                                        (click)="selectImage(item?.file?.src,item?._id)"
+                                        style="height: 200px;object-fit: cover;cursor: pointer;" class="img-fluid" [src]="item?.file?.src" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <p 
+                            *ngIf="imagesLoading"
+                            style="text-align:center;font-weight: bold;"
+                            >Loading.....</p>
+                            <div 
+                            style="text-align: left;direction: ltr;"
+                            class="row">
+                                <div 
+                                *ngIf="totalCount>10"
+                                class="col-xs-12 col-12">
+                                  <pagination [totalItems]="totalCount"
+                                  [maxSize]="maxSize"
+                                  (pageChanged)="pageChanged($event,toolsElement)"></pagination>
+                                </div>
+                              </div>
+             
+                        </div>
+                        <div
+                        *ngIf="contentImageUrl"
+                        class="my-3">
+                            <p>الصورة التي تم اختيارها : </p>
+                            <img 
+                         
+                            style="height: 200px;object-fit: cover;" class="img-fluid"
+                             [src]=" contentImageUrl" alt="">
+                        </div>
+                        <button 
+                        (click)="addImgaeToArtcleContent(imageTitleInput)"
+                        class="btn w-100 btn-secondary">
+                          تم
+                        </button>
+                    </ng-container>
+                    <!-- end content image -->
+                    <ng-container *ngIf="currentContetnt=='video'">
+                        <div style="max-height: 400px;overflow: auto;">
+                            <input 
+                            (keyup)="getVideoOneOnBlur(inputSearchForVideo.value)"
+                            (keyup.enter)="searchVideo(inputSearchForVideo)"
+                            #inputSearchForVideo
+                            type="text" placeholder="ابحث عن فيديو" class="form-control mb-3">
+                            <div 
+                            *ngIf="!videosLoading"
+                            class="row">
+                                <div 
+                                *ngFor="let item of allvideos"
+                                class="col-md-4 mb-2">
+                                    <div class="text-center">
+                                        <button 
+                                        (click)="selectVideo(item?.file?.src,item?._id)"
+                                        class="btn btn-secondary">
+                                            اختيار الفيديو
+                                        </button>
+                                        <video style="width: 100%;height: 100px;"  controls>
+                                            <source [src]="item?.file?.src" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                          </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <p 
+                            *ngIf="videosLoading"
+                            style="text-align:center;font-weight: bold;"
+                            >Loading.....</p>
+                            <div 
+                            style="text-align: left;direction: ltr;"
+                            class="row">
+                                <div 
+                                *ngIf="totalCountVideos>10"
+                                class="col-xs-12 col-12">
+                                  <pagination [totalItems]="totalCountVideos"
+                                  [maxSize]="maxSize"
+                                  (pageChanged)="videoPageChanged($event,toolsElement)"></pagination>
+                                </div>
+                              </div>
+                         
+                        </div>
+                        <div
+                        *ngIf="contentVideoUrl"
+                        class="my-3">
+                            <p>الفيديو الذي تم اختياره : </p>
+                            <video style="width: 200px;height: 100px;" controls>
+                                <source [src]="contentVideoUrl" type="video/mp4">
+                                Your browser does not support the video tag.
+                              </video>
+                        </div>
+                    </ng-container>
+                    <!-- end content video -->
+                    <ng-container *ngIf="currentContetnt=='album'">
+                   
+                          <div style="height: 400px;overflow: auto;">
+                            <input 
+                            #inputSearchForImage
+                            (keyup)="getPageOneOnBlur(inputSearchForImage.value)"
+                            (keyup.enter)="searchImages(inputSearchForImage)"
+                            type="text" placeholder="ابحث عن صورة" class="form-control mb-3">
+                            <div 
+                            *ngIf="!imagesLoading"
+                            class="row">
+                                <div 
+                                *ngFor="let item of allImages"
+                                class="col-md-4 mb-2">
+                                    <div class="text-center">
+                                        <img 
+                                        (click)="selectAlbumImage(item?.file?.src,item?._id)"
+                                        style="height: 200px;object-fit: cover;cursor: pointer;" class="img-fluid" [src]="item?.file?.src" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <p 
+                            *ngIf="imagesLoading"
+                            style="text-align:center;font-weight: bold;"
+                            >Loading.....</p>
+                            <div 
+                            style="text-align: left;direction: ltr;"
+                            class="row">
+                                <div 
+                                *ngIf="totalCount>10"
+                                class="col-xs-12 col-12">
+                                  <pagination [totalItems]="totalCount"
+                                  [maxSize]="maxSize"
+                                  (pageChanged)="pageChanged($event,toolsElement)"></pagination>
+                                </div>
+                              </div>
+                      
+                          </div>
+                          <div 
+                          *ngIf="album?.length"
+                          class="my-3">
+                             <p> الصور التي تم اختيارها</p>
+                              <div class="row">
+                                  <div
+                                  *ngFor="let item of album;let i =index"
+                                  class="col-md-4 mb-3">
+                                      <div style="position: relative;">
+                                          <i  
+                                          (click)="deleteSelectedAlbumImage(i)"
+                                          style="cursor: pointer;position: absolute;top: 10px;right: 10px;"
+                                          class="fas fa-times bg-secondary text-white p-2 mb-2 rounded"></i>
+                                          <img 
+                                          style="height: 200px;object-fit: cover;" class="img-fluid"
+                                          [src]="item?.url" alt="">
+                                          
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <button 
+                          (click)="doneAlbum()"
+                          class="btn btn-secondary w-100 my-3">
+                              تم
+                          </button>
+                    </ng-container>
+                    <!-- end content Album -->
+                </div>
+            </div>
+         <!-- end  tools -->
+         <div class="col-12">
+             <div class="showContent">
+                <div class="mb-4" *ngFor="let item of articleContent;let i = index">
+                    <div class="mb-2">
+                        <i 
+                        (click)="editMainContentItem(i,toolsElement)"
+                        style="cursor: pointer;" class="fas fa-edit"></i>
+                        <span class="d-inline-block mx-2"></span>
+                        <i 
+                        (click)="deleteMainContentItem(i)"
+                        style="cursor: pointer;" class="fas fa-trash"></i>
+                    </div>
+                    <h2 
+                    style="font-size: large;
+                    font-weight: 700;
+                    border-bottom: 1px solid #dcdcdc;
+                    padding-bottom: 5px;
+                    color: #de2323;"
+                    *ngIf="item?.title"
+                    [innerHtml]="item?.title"
+                    ></h2>
+                    <p 
+                    style="text-align: justify;font-size: 18px;
+                    line-height: 1.9;"
+                    [innerHtml]="item?.desc"
+                    class="m-0 content" 
+                    *ngIf="item?.desc"></p>
+                   
+                    <ul 
+                    class="list-unstyled p-0 m-0"
+                    *ngIf="item?.ul?.length">
+                        <li 
+                        style="margin-bottom: 10px;"
+                        *ngFor="let li of item?.ul"
+                       
+                        >
+                        <svg 
+                        style="margin-top: 5px;"
+                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                          </svg>
+                        <span 
+                        style="font-size: 18px;"
+                        [innerHtml]="li"></span>
+                    </li>
+                    </ul>
+                    <youtube-player 
+                    *ngIf="item?.youtubeLink"
+                    [videoId]="item?.youtubeLink" 
+                    suggestedQuality="highres" 
+                    [height]="250" 
+                    [width]="500" 
+                    [startSeconds]="0">
+                  </youtube-player>
+                  <fb-video 
+                  *ngIf="item?.facebookVideoLink"
+                  [attr.href]="item?.facebookVideoLink"></fb-video>
+                  <fb-post 
+                  *ngIf="item?.facebookImageLink"
+                  [attr.href]="item?.facebookImageLink"></fb-post>
+                  <div 
+                  [innerHtml]="item?.twitterOrInstagramHtml"
+                  *ngIf="item?.twitterOrInstagramHtml">
+
+                  </div>
+                  <div style="overflow: auto;">
+                    <table 
+                    *ngIf="item?.table?.length"
+                    class="table table-bordered">
+                    <tbody>
+                      <tr *ngFor="let row of item?.table">
+                        <td
+                        [innerHtml]="item?.column"
+                        *ngFor="let item of row"
+                        ></td>
+                      </tr>
+                    </tbody>
+                    </table>
+                </div>
+            
+                  <div 
+                  class="text-center"
+                  *ngIf="item?.image?.image">
+                    <img 
+                    class="img-fluid"
+                    style="max-height: 400px;object-fit: cover;"
+                    [src]="item?.image?.url" alt="">
+                    <p 
+                    [innerHtml]="item?.image?.title"
+                    *ngIf="item?.image?.title"
+                    class="m-0 text-center"></p>
+               
+                  </div>
+                  <div 
+                  *ngIf="item?.videoFromHisDevice"
+                  class="text-center">
+                  <video style="width: 100%;" height="240" controls>
+                    <source [src]="item?.url" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                  </div>
+                  <div *ngIf="item?.album?.length">
+                    <div class="row">
+                        <div 
+                        *ngFor="let albumImage of item?.album"
+                        class="col-md-3 mb-3">
+                            <div>
+                                <img 
+                                style="object-fit: cover;height: 300px;width: 100%;"
+                                [src]="albumImage?.url" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+             </div>
+         </div>
+         <!-- end show article content -->
+         <h6 class="mb-4">بيانات المقالة الاساسية</h6>
+         <div class="mb-3">
+            <label for="">كلمات دلالية</label>
+            <input 
+            (keyup.enter)="addarticlekeys(articlekeysInput)"
+            #articlekeysInput
+            type="text" class="form-control">
+            <button 
+            type="button"
+            (click)="addarticlekeys(articlekeysInput)"
+            class="btn btn-secondary my-3">اضف كلمات دلالية</button>
+            <ul>
+                <li *ngFor="let item of articleKeyWords;let i = index">
+                    <i style="cursor: pointer;" 
+                    (click)="deletekeyWordtem(i)"
+                    class="fas fa-trash"></i>
+                    {{item}}
+                </li>
+            </ul>
+        </div>
+         <form
+         [formGroup]="mainForm"
+         (ngSubmit)="submitMainForm(mainForm.value)"
+         >
+         <ng-container *ngIf="!articleId">
+            <div class="mb-3">
+                <label for="">القسم</label>
+                <select 
+                formControlName="catId"
+                (change)="fillSubSelectBox(catSelectBox)"
+                #catSelectBox
+                class="form-select" aria-label="Default select example">
+                    <option value="">اختر القسم</option>
+                    <option 
+                    *ngFor="let item of categoriesSelectBox"
+                    [value]="item?._id">{{item?.title}}</option>
+                  </select>
+                  <p 
+                  *ngIf="mainForm.controls.catId?.errors!=null &&
+                  mainForm.controls.catId.touched
+                  "
+                  class="text-danger">
+                      هذا الحقل مطلوب
+                  </p>
+             </div>
+             <div 
+    
+             *ngIf="subCategoriesSelectBox?.length"
+             class="mb-3">
+                <label for="">القسم الفرعي</label>
+                <select 
+                formControlName="subId"
+                class="form-select" aria-label="Default select example">
+                <option value="">اختر القسم الفرعي</option>
+                    <option 
+                    *ngFor="let item of subCategoriesSelectBox"
+                    [value]="item?._id">{{item?.title}}</option>
+                </select>
+             </div>
+         </ng-container>
+         
+           
+             <div class="mb-3">
+                 <label for="">العنوان الرئيسي للمقالة</label>
+                 <input 
+                 formControlName="mainArticleTitle"
+                 type="text" class="form-control">
+                 <p 
+                 *ngIf="mainForm.controls.mainArticleTitle?.errors!=null &&
+                 mainForm.controls.mainArticleTitle.touched
+                 "
+                 class="text-danger">
+                     هذا الحقل مطلوب
+                 </p>
+             </div>
+             <div class="mb-3">
+                <label for="">اسم الكاتب  </label>
+                <select 
+                formControlName="writerName"
+                class="form-select" aria-label="Default select example">
+                    <option value="">اختر اسم الكاتب </option>
+                    <option 
+                    *ngFor="let item of writers"
+                    [value]="item?._id">{{item?.name}}</option>
+                  </select>
+                  <p 
+                  *ngIf="mainForm.controls.writerName?.errors!=null &&
+                  mainForm.controls.writerName.touched
+                  "
+                  class="text-danger">
+                      هذا الحقل مطلوب
+                  </p>
+             </div>
+         
+            <div class="mb-3">
+                <div class="form-check">
+                    <input 
+                    formControlName="urgent"
+                    class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+                    <label class="form-check-label" >
+                      ظهور في عاجل
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input 
+                    formControlName="miss"
+                    class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+                    <label class="form-check-label" >
+                      ظهور في اخبار لا تفوتك
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input 
+                    formControlName="homeSlider"
+                    class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+                    <label class="form-check-label" >
+                      ظهور في سلايدر الصفحة الرئيسية
+                    </label>
+                  </div>
+                        <div class="form-check">
+                    <input 
+                    formControlName="catSlider"
+                    class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+                    <label class="form-check-label" >
+                      ظهور في سلايدر هذا القسم 
+                    </label>
+                  </div>
+            </div>
+           
+            <div class="mb-3">
+                <label for="">عنوان صورة المقالة الرئيسية (اختياري)</label>
+                <input 
+                formControlName="mainImageTitle"
+                type="text" class="form-control">
+            </div>
+            <div class="mb-3">
+                <button 
+                type="button"
+                (click)="openModal(mainImageSmallModal);getImages(1)"
+                class="btn btn-secondary mb-3">أختر صورة المقالة الرئيسية او صورة الكاتب مقاس صغير</button>
+                <div *ngIf="mainSmallImage.url" class="mb-3">
+                    <p>الصورة التي تم اختيارها</p>
+                    <img 
+                    style="height: 200px;object-fit: cover;width: 200px;"
+                    [src]="mainSmallImage.url" alt="">
+                </div>
+         <hr>
+                  <ng-template #mainImageSmallModal>
+                    <div class="modal-header">
+                      <h4 class="modal-title pull-left">أختر صورة المقالة الرئيسية مقاس صغير</h4>
+                      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                        <span aria-hidden="true" class="visually-hidden">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 400px;overflow: auto;">
+                        <input 
+                        (keyup)="getPageOneOnBlur(inputSearchForImage.value)"
+                        (keyup.enter)="searchImages(inputSearchForImage)"
+                        #inputSearchForImage
+                        type="text" placeholder="ابحث عن صورة" class="form-control mb-3">
+                        <div 
+                        *ngIf="!imagesLoading"
+                        class="row">
+                            <div 
+                            *ngFor="let item of allImages"
+                            class="col-md-4 mb-2">
+                                <div class="text-center">
+                                    <img 
+                                    (click)="selectMainImageSmallSize(item?.file?.src,item?._id)"
+                                    style="height: 200px;object-fit: cover;cursor: pointer;" class="img-fluid" [src]="item?.file?.src" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <p 
+                        *ngIf="imagesLoading"
+                        style="text-align:center;font-weight: bold;"
+                        >Loading.....</p>
+                        <div 
+                        style="text-align: left;direction: ltr;"
+                        class="row">
+                            <div 
+                            *ngIf="totalCount>10"
+                            class="col-xs-12 col-12">
+                              <pagination [totalItems]="totalCount"
+                              [maxSize]="maxSize"
+                              (pageChanged)="pageChanged($event,toolsElement)"></pagination>
+                            </div>
+                          </div>
+                    </div>
+                  </ng-template>
+            </div>
+            <div class="mb-3" style="max-height: 400px;overflow: auto;">
+                <button
+                type="button"
+                class="btn btn-secondary mb-3"
+                (click)="openModal(mainImageBigModal);getImages(1)"
+                >أختر صورة المقالة الرئيسية مقاس كبير</button>
+                <div *ngIf="mainBigImage.url" class="mb-3">
+                    <p>الصورة التي تم اختيارها</p>
+                    <img 
+                    style="height: 200px;object-fit: cover;width: 200px;"
+                    [src]="mainBigImage.url" alt="">
+                </div>
+                <hr>
+                <ng-template #mainImageBigModal>
+                    <div class="modal-header">
+                      <h4 class="modal-title pull-left">أختر صورة المقالة الرئيسية مقاس كبير</h4>
+                      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                        <span aria-hidden="true" class="visually-hidden">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 400px;overflow: auto;">
+                        <input 
+                        (keyup)="getPageOneOnBlur(inputSearchForImage.value)"
+                        (keyup.enter)="searchImages(inputSearchForImage)"
+                        #inputSearchForImage
+                        type="text" placeholder="ابحث عن صورة" class="form-control mb-3">
+                        <div 
+                        *ngIf="!imagesLoading"
+                        class="row">
+                            <div 
+                            *ngFor="let item of allImages"
+                            class="col-md-4 mb-2">
+                                <div class="text-center">
+                                    <img 
+                                    (click)="selectMainImageBigSize(item?.file?.src,item?._id)"
+                                    style="height: 200px;object-fit: cover;cursor: pointer;" class="img-fluid" [src]="item?.file?.src" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <p 
+                        *ngIf="imagesLoading"
+                        style="text-align:center;font-weight: bold;"
+                        >Loading.....</p>
+                        <div 
+                        style="text-align: left;direction: ltr;"
+                        class="row">
+                            <div 
+                            *ngIf="totalCount>10"
+                            class="col-xs-12 col-12">
+                              <pagination [totalItems]="totalCount"
+                              [maxSize]="maxSize"
+                              (pageChanged)="pageChanged($event,toolsElement)"></pagination>
+                            </div>
+                          </div>
+                    </div>
+                  </ng-template>
+     
+            </div>
+            <div class="mb-3">
+                <label for="">Meta Title</label>
+                <input 
+                formControlName="metaTitle"
+                type="text" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="">Meta keywords</label>
+                <input 
+                formControlName="metaKey"
+                type="text" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="">Meta Description</label>
+                <textarea 
+                formControlName="metaDesc"
+                class="form-control"
+                name="" id="" cols="30" rows="5"></textarea>
+            </div>
+            <button 
+            [disabled]="mainForm.invalid || !mainBigImage.url || !mainSmallImage?.url || articleContent?.length<1 || addArticleLoading" 
+            class="btn btn-secondary w-100">
+                {{articleId ? 'تعديل' : 'اضافة'}} المقالة
+                <i 
+                *ngIf="addArticleLoading"
+                class="fas fa-circle-notch fa-spin"></i>
+            </button>
+            <p 
+            *ngIf="error"
+            class="text-danger py-3">
+                {{error}}
+            </p>
+         </form>
+    </div>
+    
+</section>

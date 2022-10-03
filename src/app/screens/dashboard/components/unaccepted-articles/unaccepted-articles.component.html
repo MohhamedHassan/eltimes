@@ -1,0 +1,37 @@
+<ng-container *ngIf="loading;else content">
+  <div class="d-flex my-5 justify-content-center">
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  </div>
+</ng-container>
+<ng-template #content>
+  <h4 class="mb-5">قبول المقالات</h4>
+  <ng-container *ngIf="unAcceptedArticles?.length;else noArticles">
+    <section class="accept-article" >
+      <input 
+      [(ngModel)]="searchValue"
+      type="search" placeholder="بحث" class="mb-3 form-control">
+      <div class="overflow-auto">
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">عنوان المقالة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr [routerLink]="['/dashboard-page/main/article-details',item?.id]" *ngFor="let item of unAcceptedArticles | serachArticleTitle : searchValue;let articleIndex =index">
+              <th scope="row">{{articleIndex+1}}</th>
+              <td>{{item?.title | slice : 0 : 50}} .... عرض التفاصيل</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+    </section>
+  </ng-container>
+  <ng-template #noArticles>
+    <p class="my-5">لا توجد نتائج</p>
+  </ng-template>
+  
+
+</ng-template>

@@ -1,0 +1,14 @@
+::ng-deep {
+    .swiper-button-prev, .swiper-button-next {
+        color:#E03030 !important
+    }
+}
+.sportsPage {
+  
+    .swiperTitle {
+        background-color: #54B100;
+        &::after {
+            background: #1C3407;
+        }
+    }
+}

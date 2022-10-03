@@ -1,0 +1,398 @@
+<ng-container *ngIf="loading;else mainContent">
+  <div class="d-flex my-5 justify-content-center">
+      <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+  </div>
+</ng-container>
+<ng-template #mainContent>
+<section style="min-height: 100vh;">
+    <div class="row py-3">
+      <div class="col-md-12">
+        <div class="advertisment mb-4">
+          <a 
+          [href]="item?.url"
+          *ngFor="let item of adsService.mainAds"
+          target="_blank"
+          class="d-block mb-2"
+          >
+          <img 
+          [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+          class="w-100" style="max-height: 200px;object-fit: contain;" alt="">
+        </a>
+         
+        </div>
+        <!-- end ads section -->
+      </div>
+      <div class="col-md-8 mb-3">
+        <div class="articleDetails p-4">
+          <ul class="list-unstyled mb-4 articleBreadCrumb p-0 d-flex">
+            <li >
+              <a routerLink="/main/home" class="text-danger">الرئيسية</a>
+            </li>
+          </ul>
+          <div class="articleTitle d-flex  mb-5">
+                <div style="margin-left: 10px;">
+                    <img 
+                    style="height: 100px;width: 100px;object-fit: cover;border-radius: 50%;"
+                   [src]="'https://bf7f-172-107-168-65.ngrok.io/'+articleDetails?.image"
+                   alt="">
+                </div>
+                <div>
+                    <p class="text-secondary fw-bold">
+                      {{articleDetails?.written_by}}
+                    </p>
+                    <h1 class="fw-bold">
+                      {{articleDetails?.title}}
+                    </h1>
+                    <small class="text-secondary fw-bold"> 
+                      {{articleDetails?.created_at | date : 'fullDate' : undefined : 'ar'}}
+                    </small>
+                </div>
+          </div>
+          <div class="advertisment mb-4">
+            <a 
+            [href]="item?.url"
+            *ngFor="let item of adsService.mainAds"
+            target="_blank"
+            class="d-block mb-2"
+            >
+            <img 
+            [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+            class="w-100" style="max-height: 200px;object-fit: contain;" alt="">
+          </a>
+           
+          </div>
+          <!-- end ads section -->
+          <div class="content mb-3">
+            <div class="mb-3">
+  
+            </div>
+            <div class="shareOnSocialMedia flex-column flex-sm-row d-flex align-items-center justify-content-center">
+              <span class="sharee my-2"><i class="fas text-danger fa-share-alt"></i> مشاركة</span>
+              <ul class="socialMedia list-unstyled  p-0 d-flex my-2">
+                <li>
+                  <a
+                  target="_blank" rel="noreferrer"
+                  [href]="'http://pinterest.com/pin/create/link/?url=https://eltimeseg.com/main/author-article-details/'+articleId"
+                  > <i style="background-color:  #DF0019;;" class="fab fa-pinterest-p"></i></a>
+                </li>
+                <li>
+                  <a
+                  target="_blank" rel="noreferrer"
+                  [href]="'https://twitter.com/intent/tweet?url=https://eltimeseg.com/main/author-article-details/'+articleId">
+                  
+                    <i style="background-color:  #1D9BF0;;" class="fab fa-twitter"></i></a>
+                </li>
+                <li>
+                  <a
+                  target="_blank" rel="noreferrer"
+                  [href]="'https://www.facebook.com/sharer.php?u=https://eltimeseg.com/main/author-article-details/'+articleId"
+                  ><i style="background-color: #1B74E4;;" class="fab fa-facebook-f"></i></a>
+                </li>
+              </ul>
+            </div>
+            <!-- end shareOnSocialMedia -->
+          
+            <div
+            *ngFor="let item of content"
+            class="contentContainer mb-4">
+            <div 
+            [innerHtml]="bypassSecurityTrustHtml(item)"
+            class="content-item mb-5 text-center">
+           
+            </div>
+            </div>
+            <ng-container *ngIf="youtubeIframe!='false'"> 
+              <div class="my-5">
+                  <youtube-player 
+                  [videoId]="youtubeIframe" 
+                  suggestedQuality="highres" 
+                  [height]="250" 
+                  [width]="500" 
+                  [startSeconds]="4"
+                  [endSeconds]="8">
+                </youtube-player>
+              </div>
+         
+            </ng-container>
+            <ng-container *ngIf="fbimage!='false'">
+              <div class="my-3">
+                  <fb-post [attr.href]="fbimage"></fb-post>
+              </div>
+
+          </ng-container>
+          <ng-container *ngIf="fbvideo!='false'">
+              <div class="my-3">
+                  <fb-video [attr.href]="fbvideo"></fb-video>
+              </div>
+
+          </ng-container>
+          </div>
+          <!-- end content -->
+          <ul class="list-unstyled p-0 mb-3 keyWords d-flex flex-wrap">
+            <i class="text-danger m-2 ps-2 fas fa-search"></i>
+            <li
+            *ngFor="let item of articleDetails?.keys"
+            ><a 
+            [routerLink]="['/main/search',item?.key]"
+            class="text-white px-3 py-1  bg-secondary">{{item?.key}}</a></li>
+          </ul>
+          <!-- end key words -->
+          <h6 
+          *ngIf="commonArticles?.length"
+          class="bg-danger fw-bold text-white p-2">الموضوعات المتعلقة</h6>
+          <section 
+          *ngIf="commonArticles?.length"
+          class="news mb-3">
+            <div class="row">
+                  <div 
+                  *ngFor="let item of commonArticles"
+                  class="col-sm-6  col-md-4 mb-2">
+                      <a [routerLink]="['/main/author-article-details',item?.id]" >
+                        <article>
+                          <img [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.image" class="w-100" alt="التايمز eg">
+                          <p>
+                            {{item?.title}} </p>
+                        </article>
+                      </a>
+                  </div>
+            </div>
+          </section>
+          <!-- end related -->
+          <div class="advertisment mb-4">
+            <a 
+            [href]="item?.url"
+            *ngFor="let item of adsService.mainAds"
+            target="_blank"
+            class="d-block mb-2"
+            >
+            <img 
+            [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+            class="w-100" style="max-height: 200px;object-fit: contain;" alt="">
+          </a>
+           
+          </div>
+          <!-- end ads section -->
+          <div class="addComment">
+            <h6 class="p-2 text-white bg-secondary fw-bold">أضف تعليق</h6>
+            <form 
+          [formGroup]="addCommentForm"
+          (ngSubmit)="addComment(addCommentForm.value)"
+            class="row">
+               <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                     <input 
+                     formControlName="name"
+                     type="text" placeholder="الاسم" class="form-control">
+                     <p 
+                     *ngIf="addCommentForm.controls.name?.errors?.invalidContetn &&
+                     addCommentForm.controls.name.touched
+                     "
+                     class="text-danger my-2">
+                       برجاء ادخال الاسم
+                     </p>
+                  </div>
+               </div>
+               <div class="col-md-6 mb-3">
+                 <div class="form-group">
+                   <input 
+                   formControlName="email"
+                   type="email" placeholder="البريد الالكتروني" class="form-control">
+                   <ng-container *ngIf="addCommentForm.controls.email.touched">
+                     <p 
+                     *ngIf="addCommentForm.controls.email?.errors?.email ||
+                     addCommentForm.controls.email?.errors?.required 
+                     "
+                     class="text-danger my-2">
+                      برجاء ادخال بريد الكتروني صالح
+                     </p>
+                   </ng-container>
+                </div>
+               </div>
+               <div class="col-md-12 mb-3">
+                 <div class="form-group">
+                  <textarea 
+                  formControlName="content"
+                  name="" id=""  rows="5" placeholder=" التعليق" class="form-control"></textarea>
+                  <p 
+                  *ngIf="addCommentForm.controls.content?.errors?.invalidContetn &&
+                  addCommentForm.controls.content.touched
+                  "
+                  class="text-danger my-2">
+                    برجاء ادخال  التعليق
+                  </p>
+                </div>
+               </div>
+               <div class="col-md-12 d-flex justify-content-end">
+                 <button 
+                 [disabled]="addCommentForm.invalid || addCommentLoading"
+                 class="btn btn-secondary">
+                   ارسال
+                   <i 
+                   *ngIf="addCommentLoading"
+                   class="fas fa-circle-notch fa-spin"></i>
+                 </button>
+               </div>
+            </form>
+            <div
+            *ngIf="comments?.length"
+            class="commentsContanier"
+            style="max-height: 300px;overflow: auto;"
+            >
+               <ul 
+               
+               class="list-unstyled px-0 py-3">
+                 <li 
+                 *ngFor="let comment of comments"
+                 class="d-flex align-items-center mb-3">
+                   <img src="assets/user.png" 
+                   style="width: 40px;height: 40px;border-radius: 50%;margin-left: 10px;"
+                   alt="">
+               <div>
+                 <p style="word-break: break-all;" class="mb-2">{{comment?.name}}</p>
+                 <p style="word-break: break-all;" class="m-0">{{comment?.content}}</p>
+               </div>
+                 </li>
+               </ul>
+            </div>
+          <p 
+          *ngIf="!comments?.length"
+            class="my-3">
+             لا يوجد تعليقات
+           </p>
+          </div>
+        </div>
+  
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="news mb-3">
+          <div class="socialMedia">
+            <ul class="list-unstyled p-0 d-flex">
+              <li class="instgram">
+                <a 
+                target="_blank" href="https://www.instagram.com/eltimeseg/"
+                >
+                  <i class="fab fa-instagram"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+              <li class="facebook">
+                <a 
+                target="_blank" href="https://www.facebook.com/eltimseg/"
+                >
+                  <i class="fab fa-facebook-square"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+  
+            </ul>
+            <ul class="p-0 list-unstyled d-flex">
+              <li class="youtube">
+                <a 
+                target="_blank" href="https://www.youtube.com/channel/UC6z5cIMQ004W0xJX_3uUzYw"
+                >
+                  <i class="fab fa-youtube"></i>
+                  <span>Subscribe</span>
+                </a>
+              </li>
+              <li class="twitter">
+                <a 
+                target="_blank" href="https://twitter.com/THETIMESEG"
+                >
+                  <i class="fab fa-twitter"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+            </ul>
+            <ul class="p-0 list-unstyled d-flex">
+              <!-- <li class="snapchat">
+                <a>
+                  <i class="fab fa-snapchat-ghost"></i>
+                  <span>Follow</span>
+                </a>
+              </li> -->
+              <li class="pinterest" style="width: 100%;">
+                <a 
+                target="_blank" href="https://www.pinterest.com/eltimeseg/_saved/"
+                class="justify-content-center" >
+                  <i class="fab fa-pinterest-p"></i>
+                  <span>Follow</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="advertisment mb-3">
+          <a 
+          [href]="item?.url"
+          *ngFor="let item of adsService.mainAds"
+          target="_blank"
+          class="d-block mb-2"
+          >
+          <img 
+          [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+          class="w-100" style="max-height: 200px;object-fit: cover;" alt="">
+        </a>
+         
+        </div>
+        <!-- end ads section -->
+        <div 
+        *ngIf="mostRead?.length"
+        class="news">
+          <h6 class="title mt-2" style="cursor: text;">الأكثر قراءة</h6>
+          <div class="row mb-3">
+            <div 
+            *ngFor="let item of mostRead"
+            class="col-sm-6 col-md-12">
+              <a [routerLink]="['/main/details',item?.id]" >
+                <article class="  d-flex">
+                  <div>
+                    <img [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.image" alt="">
+                  </div>
+                  <p> {{item?.title | slice : 0 : 100}}
+
+                  </p>
+                </article>
+              </a>
+            </div>
+          
+          </div>
+        </div>
+        <div class="advertisment mb-4">
+          <a 
+          [href]="item?.url"
+          *ngFor="let item of adsService.mainAds"
+          target="_blank"
+          class="d-block mb-2"
+          >
+          <img 
+          [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+          class="w-100" style="max-height: 200px;object-fit: cover;" alt="">
+        </a>
+         
+        </div>
+        <!-- end ads section -->
+
+
+      </div>
+    </div>
+         <div class="advertisment mb-4">
+          <a 
+          [href]="item?.url"
+          *ngFor="let item of adsService.mainAds"
+          target="_blank"
+          class="d-block mb-2"
+          >
+          <img 
+          [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+          class="w-100" style="max-height: 200px;object-fit: contain;" alt="">
+        </a>
+         
+        </div>
+        <!-- end ads section -->
+  </section>
+</ng-template>

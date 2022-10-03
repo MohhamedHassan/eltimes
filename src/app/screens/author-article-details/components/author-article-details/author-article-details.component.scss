@@ -1,0 +1,49 @@
+.articleDetails {
+    background-color: #F0F0F0;
+    border-radius: 10px;
+    h1 {
+        color:#de2323;
+        font-size: 26px;
+        line-height: 38px;
+    }
+    .paragraph {
+        font-weight: bold;
+        font-size: 15px;
+    }
+    .sharee {
+        border: 1px solid #de2323;
+        border-radius: 20px;
+        padding:2px 10px;
+        margin-left: 10px;
+    }
+    .fcb {
+        background-color: #3E51A0;
+        color: white;
+        padding: 7px 11px; 
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    article {
+        background-color: white !important;
+    }
+}
+.articleBreadCrumb {
+    li {
+        margin-left: 10px;
+    }
+}
+.shareOnSocialMedia {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.keyWords {
+  li {
+    margin: 10px 5px;
+    cursor: pointer;
+    a {
+        border-radius: 3px;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<ng-container *ngIf="loading;else Rss">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #Rss>
+
+<section style="min-height: 100vh;" class="py-5 rss">
+     <div class="container-fluid">
+         <div class="row">
+            <div 
+            class="col-md-6 mb-2"
+            *ngFor="let category of categories">
+                <h6 class="bg-secondary text-white p-3">
+                    <a [href]="'https://www.eltimeseg.com/rss/rss.xml/'+category?._id" target="_blank" style="height: 100%;width: 100%;display: block;">
+                        <i style="background-color: #FF9A00;" class="fas fa-rss"></i>
+                        {{category?.title}} 
+                    </a>
+                </h6>
+            </div>
+         </div>
+     </div>
+    <!-- <div class="advertisment">
+        <a 
+        [href]="item?.url"
+        *ngFor="let item of adsService.mainAds"
+        target="_blank"
+        class="d-block mb-2"
+        >
+        <img 
+        [src]="'https://bf7f-172-107-168-65.ngrok.io/'+item?.Image"
+        class="w-100" style="max-height: 200px;object-fit: contain;" alt="">
+      </a>
+       
+      </div> -->
+      <!-- end ads section -->
+</section>
+</ng-template>

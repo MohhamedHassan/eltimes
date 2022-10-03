@@ -1,0 +1,14 @@
+table{
+    i {
+        cursor: pointer;
+        &:hover {
+            color: #FF4C3B;
+        }
+    }
+}
+table {min-width: 700px;}
+::ng-deep {
+    .modal-header .btn-close {
+        margin: -0.5rem auto -0.5rem -0.5rem !important;
+    }
+}

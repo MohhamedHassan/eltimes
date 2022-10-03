@@ -1,0 +1,64 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section class="categories">
+        <h4 class="mb-5">جميع الكتاب</h4>
+        <div class="d-sm-flex mb-5">
+          <button 
+          class="btn btn-secondary ms-2">
+            <a class="text-white" 
+            routerLink="/dashboard-page/main/add-writer">
+                اضافة كاتب
+                <i class="fas fa-plus"></i>
+            </a>
+        </button>
+        <div>
+          <input [(ngModel)]="searchValue" type="بحث" placeholder="search" class="form-control my-2 my-sm-0">
+        </div>
+        </div>
+        <ng-container *ngIf="writers?.length;else noWriters">
+           <ul class="writers">
+               <li 
+               class="mb-3"
+               *ngFor="let writer of writers | writerSearch : searchValue">
+               <ng-template #editWriterr>
+                <div class="modal-header">
+                  <h4 class="modal-title pull-left">تغيير اسم الكاتب</h4>
+                  <button type="button" class="btn-close close pull-right" aria-label="Close" 
+                  (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <input #newWriterName type="text" class="form-control mb-3" [value]="writer?.name">
+                  <button 
+                  (click)="editWriter({name:newWriterName.value},writer?._id)"
+                  class="btn btn-secondary">تأكيد
+                  <i 
+                  *ngIf="loading"
+                  class="fas fa-circle-notch fa-spin"></i>
+                </button>
+                <p 
+                *ngIf="error"
+                class="my-3 text-danger">{{error}}</p>
+                </div>
+              </ng-template>
+               <i 
+              (click)="openModal(editWriterr)"
+               class="far fa-edit"></i>
+               <i 
+               (click)="deleteWriter(writer?._id)"
+               class="far fa-trash-alt px-3"></i>
+               {{writer?.name}}</li>
+           </ul>
+        </ng-container>
+        <ng-template #noWriters>
+            <p class="my-5">لا يوجد كتاب </p>
+        </ng-template>
+
+    </section>
+</ng-template>
+ 

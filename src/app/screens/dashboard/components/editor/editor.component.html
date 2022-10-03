@@ -1,0 +1,35 @@
+<ng-container *ngIf="loading;else Content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #Content>
+    <section class="add-category">
+        <h4>رئيس التحرير</h4>
+        <form [formGroup]="addEditorForm"
+         (ngSubmit)="addEditor(addEditorForm.value)" class="mt-5">
+            <div class="form-group mb-4">
+                <label class="mb-2">رئيس مجلس الادارة</label>
+                <input formControlName="chairmanOfBoardOfDirectors" type="text" placeholder="رئيس مجلس الادارة" class="form-control">
+                <p *ngIf="addEditorForm.controls.chairmanOfBoardOfDirectors?.errors != null && addEditorForm.controls.chairmanOfBoardOfDirectors.touched"
+                    class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+            <div class="form-group mb-4">
+                <label class="mb-2">رئيس التحرير</label>
+                <input formControlName="editor" type="text" 
+                placeholder="رئيس التحرير" class="form-control">
+                <p *ngIf="addEditorForm.controls.editor?.errors != null && addEditorForm.controls.editor.touched"
+                    class="my-2 text-danger">هذا الحقل مطلوب</p>
+            </div>
+                      <div class="mt-5">
+                <button [disabled]="addEditorForm.invalid || loading" type="submit" class="btn-secondary btn w-100">تم <i
+                        *ngIf="loading" class="fas fa-circle-notch fa-spin"></i></button>
+            </div>
+        </form>
+    </section>
+</ng-template>

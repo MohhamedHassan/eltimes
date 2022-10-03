@@ -1,0 +1,278 @@
+<section>
+    <ul class="breadCrumbb d-flex mb-5 p-2 list-unstyled">
+         <li>
+             <a
+             routerLink="/main/home"
+             >
+                 الرئيسية
+             </a>
+         </li>
+         <li>
+             /
+         </li>
+         <li>
+             <a>
+                 مرأة ومنوعات
+             </a>
+         </li>
+    </ul>
+    <div 
+    *ngIf="mainImage?._id"
+    class="pageTitle mb-5">
+        <div class="title">مرأة ومنوعات</div>
+    </div>
+ </section>
+ <!-- end breadCrumb  -->
+ <div 
+ *ngIf="areaone?.length"
+ class="advertisment mb-4">
+    <ng-container *ngIf="areaone?.length==1">
+        <a   [href]="areaone[0]?.link" target="_blank">
+          <img 
+          style="max-height:150px;width: 100%;object-fit: contain"
+          [src]="areaone[0]?.image?.file?.src" >
+       </a>
+      </ng-container>
+      <ng-container *ngIf="areaone.length>1">
+ 
+        <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+        [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+        [navigation]="false" class=" ">
+        <ng-template 
+        *ngFor="let item of areaone"
+        data-swiper-autoplay="6000" swiperSlide>
+          <a   [href]="item?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="item?.image?.file?.src" >
+          </a>
+        </ng-template>
+    </swiper>
+      </ng-container>
+   
+  </div>
+  <!-- end ads section -->
+  <section style="min-height: 100vh;">
+  <div class="row">
+       
+    <div class="order-2 order-md-1 col-md-7 mb-4">
+        <ng-container *ngIf="womanPageLoading;else image">
+            <ngx-skeleton-loader count="1" appearance="circle" [theme]="{
+                width: '100%',
+                height: '300px',
+                'border-radius': '10px',
+                margin:0
+            }"></ngx-skeleton-loader>
+        </ng-container>    
+        <ng-template #image>
+         <div 
+         *ngIf="mainImage?._id"
+         class="parentOfLabel position-relative">
+           <a  [routerLink]="['/main/details',mainImage?._id]" >
+            <img [src]="mainImage?.main?.image?.imageBigSize?.file?.src"
+            style="height: 300px;width: 100%;object-fit: cover;border-radius: 10px;"
+            alt="">
+            <p class="label fw-bold" style="font-size: 20px;">{{mainImage?.main?.title}}</p>
+           </a>
+         </div>
+        </ng-template> 
+    </div>
+    <!-- end image section -->
+    <div 
+    *ngIf="areatwo?.length"
+    class="order-1 order-md-2 col-md-5 mb-4">
+    <ng-container *ngIf="areatwo?.length==1">
+        <a   [href]="areatwo[0]?.link" target="_blank">
+          <img 
+          style="max-height:150px;width: 100%;object-fit: contain"
+          [src]="areatwo[0]?.image?.file?.src" >
+       </a>
+      </ng-container>
+      <ng-container *ngIf="areatwo.length>1">
+    
+        <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+        [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+        [navigation]="false" class=" ">
+        <ng-template 
+        *ngFor="let item of areatwo"
+        data-swiper-autoplay="6000" swiperSlide>
+          <a   [href]="item?.link" target="_blank">
+             <img 
+             style="max-height:150px;width: 100%;object-fit: contain"
+             [src]="item?.image?.file?.src" >
+          </a>
+        </ng-template>
+    </swiper>
+      </ng-container>
+    </div>
+    <!-- end ads section -->
+</div>
+<!-- end image section -->
+<div *ngIf="mixArticles?.length">
+    <div class="pageTitle one my-5">
+        <div class="title">منوعات</div>
+    </div>
+ </div>
+ <section *ngIf="mixArticles?.length" class="news">
+    <div class="row">
+            <ng-container *ngIf="mixArticles?.length">
+                <div 
+                *ngFor="let mixItem of mixArticles"
+                class="col-sm-6  col-md-4 mb-4">
+                  <a [routerLink]="['/main/details',mixItem?._id]">
+                    <article>
+                        <img [src]="mixItem?.main?.image?.image?.file?.src" class="w-100" alt="">
+                        <p>{{mixItem?.main?.title}} </p>
+                    </article>
+                  </a>
+                </div>
+            </ng-container>
+        
+     
+    </div>
+    <div 
+    *ngIf="totalPages>10"
+    style="overflow:auto"
+    class="d-flex justify-content-center">
+        <pagination
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+        (pageChanged)="pageChanged($event)"
+        [totalItems]="totalPages"
+         [maxSize]="5"></pagination>
+     </div>
+</section>
+<!-- end more  -->
+<div 
+*ngIf="areathree?.length"
+class="advertisment mb-4">
+<ng-container *ngIf="areathree?.length==1">
+  <a   [href]="areathree[0]?.link" target="_blank">
+    <img 
+    style="max-height:150px;width: 100%;object-fit: contain"
+    [src]="areathree[0]?.image?.file?.src" >
+ </a>
+</ng-container>
+<ng-container *ngIf="areathree.length>1">
+
+  <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+  [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+  [navigation]="false" class=" ">
+  <ng-template 
+  *ngFor="let item of areathree"
+  data-swiper-autoplay="6000" swiperSlide>
+    <a   [href]="item?.link" target="_blank">
+       <img 
+       style="max-height:150px;width: 100%;object-fit: contain"
+       [src]="item?.image?.file?.src" >
+    </a>
+  </ng-template>
+</swiper>
+</ng-container>
+ 
+</div>
+  <!-- end ads section -->
+<section class="news">
+    <div class="row">
+        <ng-container *ngIf="womanPageLoading;else articles3"> 
+            <div 
+            *ngFor="let item of navBarService.loadingCount"
+            class="col-sm-6  col-md-3 mb-4">
+                <ngx-skeleton-loader count="1" appearance="circle" [theme]="{
+                    width: '100%',
+                    height: '150px',
+                    'border-radius': '10px',
+                    margin:0
+                }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader count="2"  [theme]="{
+                    width: '100%',
+                    height: '5px',
+                    'margin-bottom':'2px',
+                    'border-radius': '10px'
+                }"></ngx-skeleton-loader>
+            </div>
+        </ng-container>
+        <ng-template #articles3>
+            <ng-container  *ngFor="let item of subCategories | slice : 0 : 4">
+                <div 
+                *ngIf="item?.posts?.length"
+                class="col-sm-6  col-md-3 mb-4">
+                    <div>
+                       <a   [routerLink]="['/main/category',item?._id,true,item?.title]">
+                        <h6 
+                        class="title">{{item?.title}}</h6>
+                       </a>
+                        <ng-container *ngFor="let sub of item?.posts|slice:0:3 ">
+                          <a [routerLink]="['/main/details',sub?._id]">
+                            <article >
+                                <img [src]="sub?.main?.image?.image?.file?.src" class="w-100" alt="">
+                                <p>{{sub?.main?.title}}</p>
+                            </article>
+                          </a>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+            
+         
+        </ng-template>
+        
+     
+    </div>
+</section>
+<div 
+  *ngIf="areafour?.length"
+  class="advertisment mb-4">
+  <ng-container *ngIf="areafour?.length==1">
+    <a   [href]="areafour[0]?.link" target="_blank">
+      <img 
+      style="max-height:150px;width: 100%;object-fit: contain"
+      [src]="areafour[0]?.image?.file?.src" >
+   </a>
+  </ng-container>
+  <ng-container *ngIf="areafour.length>1">
+
+    <swiper [loop]="true" [autoHeight]="true" [allowTouchMove]="false"
+    [autoplay]="{ delay: 5000, disableOnInteraction: false }" [pagination]="{ clickable: true }"
+    [navigation]="false" class=" ">
+    <ng-template 
+    *ngFor="let item of areafour"
+    data-swiper-autoplay="6000" swiperSlide>
+      <a   [href]="item?.link" target="_blank">
+         <img 
+         style="max-height:150px;width: 100%;object-fit: contain"
+         [src]="item?.image?.file?.src" >
+      </a>
+    </ng-template>
+</swiper>
+  </ng-container>
+   
+   
+  </div>
+  <!-- end ads section -->
+<section class="news">
+    <div class="row">
+        <ng-container  *ngFor="let item of subCategories | slice : 4">
+            <div 
+            *ngIf="item?.posts?.length"
+            class="col-sm-6  col-md-3 mb-4">
+            <div >
+                <h6 
+                [routerLink]="['/main/category',item?._id,true,item?.title]"
+                class="title">{{item?.title}}</h6>
+                <ng-container *ngFor="let sub of item?.posts |slice:0:3">
+                   <a [routerLink]="['/main/details',sub?._id]">
+                    <article *ngIf="sub!=null">
+                        <img [src]="sub?.main?.image?.image?.file?.src" class="w-100" alt="">
+                        <p>{{sub?.main?.title}}</p>
+                    </article>
+                   </a>
+                </ng-container>
+            </div>
+            </div>
+        </ng-container>
+        
+      
+    </div>
+</section>
+<!-- end main content -->
+</section>

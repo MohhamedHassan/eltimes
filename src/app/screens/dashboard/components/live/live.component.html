@@ -1,0 +1,70 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+    <section class="Live pb-5">
+        <h4 class="mb-5">البث المباشر</h4>
+     
+        <ng-container  *ngIf="htmlContainer;else noLive">
+            <div class="mb-2">
+                <button 
+                (click)="deleteLive()"
+                [disabled]="deleteLoading"
+                class="btn btn-danger">
+                    حذف البث المباشر
+                    <i *ngIf="deleteLoading" class="fas fa-circle-notch fa-spin"></i>
+                </button>
+            </div>
+            <div 
+            *ngIf="htmlContainer"
+            style="width: 70%;margin:20px auto;">
+                <div *ngIf="liveType==2">
+                    <fb-video [attr.href]="htmlContainer"></fb-video>
+                </div>
+                <div *ngIf="liveType==0">
+                    <youtube-player 
+                    [videoId]="htmlContainer" 
+                    suggestedQuality="highres" 
+                    [height]="250" 
+                    [width]="500" 
+                   >
+                  </youtube-player>
+                </div>
+                <div 
+                [innerHtml]="htmlContainer"
+                *ngIf="liveType==1">
+
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noLive>
+            <p class="py-4">لا يوجد بث مباشر</p>
+        </ng-template>
+        
+        
+        <form 
+        *ngIf="!htmlContainer"
+        [formGroup]="AddLiveForm"
+        (ngSubmit)="addLive(AddLiveForm.value)"
+        >
+            <div class="form-group">
+                <input 
+                formControlName="url"
+                class="form-control">
+                <p 
+                *ngIf="AddLiveForm.controls.url?.errors!=null&&AddLiveForm.controls.url.touched"
+                class="text-danger py-2">
+                    هذا الحقل مطلوب
+                </p>
+            </div>
+            <button 
+            [disabled]="AddLiveForm.invalid || addLiveLoading"
+            class="mt-3 btn btn-secondary">
+                أضافة بث مباشر
+                <i *ngIf="addLiveLoading" class="fas fa-circle-notch fa-spin"></i>
+            </button>
+        </form>
+    </section>
+</ng-template>

@@ -1,0 +1,118 @@
+<ng-container *ngIf="loading;else content">
+    <div class="d-flex my-5 justify-content-center">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</ng-container>
+<ng-template #content>
+<section class="all-users">
+    <h4 class="mb-5">جميع المستخدمين</h4>
+    <button class="btn btn-secondary mb-2">
+        <a class="text-white" 
+        routerLink="/dashboard-page/main/add-user">
+            اضافة مستخدم
+            <i class="fas fa-plus"></i>
+        </a>
+    </button>
+    <div 
+    *ngIf="users?.length"
+    class="d-flex mb-2">
+        <div class="form-group ">
+            <select 
+            #select
+            (change)="tableFilterValue=select.value;searchValue=''"
+            class="form-select">
+             <option value="-1">الكل</option>
+             <option value="admin">أدمن</option>
+             <option value="supervisor">مشرف</option>
+             <option value="writer">كاتب</option>
+             <option value="editor">محرر</option>
+            </select>
+        </div>
+       <div>
+        <input [(ngModel)]="searchValue" placeholder="بحث بالاسم"   type="search" class="mx-3 form-control">
+       </div>
+    </div>
+    <div class="overflow-auto">
+      <table 
+      *ngIf="users?.length"
+      class="table">
+          <thead class="table-dark">
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">الأسم</th>
+                  <th scope="col">الأيميل</th>
+                  <th scope="col">النوع</th>
+                  <th scope="col">تعديل كلمة المرور</th>
+                  <th scope="col">حذف الحساب</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr 
+              [class.table-warning]="user?.banned"
+              *ngFor="let user of users | tableFilter : tableFilterValue : searchValue;let i =index">
+                  <ng-template #deleteUser>
+                      <div class="modal-header">
+                        <h4 class="modal-title pull-left">تأكيد حذف هذا المستخدم</h4>
+                        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                          <span aria-hidden="true" class="visually-hidden">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          
+                        <button 
+                        (click)="modalRef?.hide()"
+                        class="btn btn-light">الغاء</button>
+                        <button 
+                          (click)="deleteUserr(user?._id)"
+                        class="btn btn-secondary mx-3">
+                        تأكيد   <i 
+                        *ngIf="deleteUserLoading"
+                        class="fas fa-circle-notch fa-spin"></i>
+                      </button>
+                      </div>
+                    </ng-template>
+                       <!-- -------- delete user user popup ----------- -->
+                    <ng-template #updatePassword>
+                      <div class="modal-header">
+                        <h4 class="modal-title pull-left">تعديل  كلمة المرور</h4>
+                        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                          <span aria-hidden="true" class="visually-hidden">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <input #pass type="text" placeholder="كلمة المرور الجديدة" class="mb-3 form-control">
+                        <button 
+                        (click)="modalRef?.hide()"
+                        class="btn btn-light">الغاء</button>
+                        <button 
+                          (click)="updateUserPassword(user?._id,pass.value)"
+                        class="btn btn-secondary mx-3">
+                        تأكيد   <i 
+                        *ngIf="updateUserNameLoading"
+                        class="fas fa-circle-notch fa-spin"></i>
+                      </button>
+                      </div>
+                    </ng-template>
+                    <!-- -------- update user password popup ----------- -->
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{user?.name}}</td>
+                  <td>{{user?.email}}</td>
+                  <td>{{user?.role?.type == 'admin' ? 'أدمن' : user?.role?.type == 'supervisor'  ? "مشرف" : user?.role?.type == 'writer' ? "كاتب" : user?.role?.type == 'editor'  ?
+                      "محرر" : ""}}</td>
+                  <td>
+                    <i
+                    (click)="openModal(updatePassword)"
+                      *ngIf="!user?.banned"
+                      class="far fa-edit"></i></td>
+                  <td><i
+                      *ngIf="!user?.banned"
+                      (click)="openModal(deleteUser)"
+                      class="far fa-trash-alt"></i></td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    <p *ngIf="!users?.length" class="my-5">لا يوجد مستخدمين</p>
+</section>
+
+</ng-template>
