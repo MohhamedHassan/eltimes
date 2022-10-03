@@ -634,7 +634,7 @@ __webpack_require__.r(__webpack_exports__);
 const environment = {
     production: false,
     //apiUrl:'https://apis.eltimeseg.com/api/'
-    apiUrl: 'http://apis.eltimeseg.re-comparison.com/api/'
+    apiUrl: 'https://apis.eltimeseg.re-comparison.com/api/'
 };
 /*
  * For easier debugging in development mode, you can import the following file
