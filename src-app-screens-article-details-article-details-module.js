@@ -1003,7 +1003,7 @@ class ArticleDetailsComponent {
                 this.meta.updateTag({ property: 'og:title', content: `${(_t = res === null || res === void 0 ? void 0 : res.main) === null || _t === void 0 ? void 0 : _t.title} | التايمز EG` });
                 this.meta.updateTag({ property: 'og:description', content: `${(_u = res === null || res === void 0 ? void 0 : res.metaData) === null || _u === void 0 ? void 0 : _u.desc}` });
                 let ogimage = (_y = (_x = (_w = (_v = res === null || res === void 0 ? void 0 : res.main) === null || _v === void 0 ? void 0 : _v.image) === null || _w === void 0 ? void 0 : _w.image) === null || _x === void 0 ? void 0 : _x.file) === null || _y === void 0 ? void 0 : _y.src.split('.');
-                this.meta.updateTag({ property: 'og:image:type', content: `image/${ogimage[ogimage.length - 1]}` });
+                this.meta.updateTag({ property: 'og:image:type', content: `image/${ogimage[(ogimage === null || ogimage === void 0 ? void 0 : ogimage.length) - 1]}` });
                 this.meta.updateTag({ name: 'twitter:image', content: `${(_2 = (_1 = (_0 = (_z = res === null || res === void 0 ? void 0 : res.main) === null || _z === void 0 ? void 0 : _z.image) === null || _0 === void 0 ? void 0 : _0.image) === null || _1 === void 0 ? void 0 : _1.file) === null || _2 === void 0 ? void 0 : _2.src}` });
                 this.meta.updateTag({ name: 'twitter:card', content: `summary_large_image` });
                 this.meta.updateTag({ name: 'twitter:title', content: `${(_3 = res === null || res === void 0 ? void 0 : res.main) === null || _3 === void 0 ? void 0 : _3.title} | التايمز EG` });
