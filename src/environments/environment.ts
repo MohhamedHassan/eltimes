@@ -5,12 +5,13 @@
 export const environment = { 
   production: false,
   //apiUrl:'https://apis.eltimeseg.com/api/'
-  apiUrl:'http://apis.eltimeseg.re-comparison.com/api/'
+ // apiUrl:'http://apis.eltimeseg.re-comparison.com/api/'
+ apiUrl:'https://eltimes-eg.onrender.com/api/'
 };
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
+ * eltimes@gmail.com eltimes
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */

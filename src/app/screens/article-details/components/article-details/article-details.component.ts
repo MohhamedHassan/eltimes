@@ -139,7 +139,7 @@ export class ArticleDetailsComponent implements OnInit {
         ) 
         let ogimage = res?.main?.image?.image?.file?.src.split('.')
         this.meta.updateTag(  
-          { property: 'og:image:type', content: `image/${ogimage[ogimage.length-1]}`}
+          { property: 'og:image:type', content: `image/${ogimage[ogimage?.length-1]}`}
         ) 
         this.meta.updateTag(  
           { name: 'twitter:image', content: `${res?.main?.image?.image?.file?.src}` }
